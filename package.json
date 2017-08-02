@@ -1,0 +1,42 @@
+{
+  "name": "service-modelling-tool",
+  "version": "0.0.0",
+  "description": "Example project for using React with ES6 and Webpack 3",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/niklas92/service-modelling-tool"
+  },
+  "author": "Niklas Scholz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/niklas92/service-modelling-tool/issues"
+  },
+  "homepage": "https://github.com/niklas92/service-modelling-tool#readme",
+  "engines": {
+    "node": ">=4.3"
+  },
+  "devDependencies": {
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^0.28.4",
+    "extract-text-webpack-plugin": "^3.0.0",
+    "html-loader": "^0.4.5",
+    "html-webpack-plugin": "^2.29.0",
+    "http-server": "^0.10.0",
+    "style-loader": "^0.18.2",
+    "webpack": "^3.3.0",
+    "d3": "^4.10.0"
+  },
+  "dependencies": {
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config webpack.config.js",
+    "start": "http-server -a localhost -p 8000 -c-1 ./dist"
+  }
+}
