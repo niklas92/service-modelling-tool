@@ -1,0 +1,49 @@
+/* YOUR CUSTOM STYLES */
+.list-group-item.active {
+    background-color: #2bbbad;
+    border-color:#2bbbad
+}
+
+.list-group-item:not(.active) {
+    color:#222;
+}
+
+.list-group-item:not(.active):hover {
+    color:#666;
+}
+.bodyContainer {
+    padding-top: 25px;
+    padding-bottom: 10px;
+}
+.editor {
+    height: 150px;
+}
+#schemaPrinter, #resolversEditor{
+    height: 400px;
+}
+main {
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+}
+.widget-wrapper {
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 2rem;
+}
+.extra-margins {
+    margin-top: 1rem;
+    margin-bottom: 2.5rem;
+}
+.divider-new {
+    margin-top: 0;
+}
+.navbar {
+    background-color: #414a5c;
+}
+footer {
+    background-color: #414a5c;
+    color: #ffffff;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+}

@@ -3,10 +3,15 @@
 const webpack = require('webpack');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const path = require('path');
 
 module.exports = {
+    /*watch: true,
+    watchOptions: {
+        ignored: /(node_modules)/
+    },*/
     entry: {
         'vendor': ['d3'],
         'app': path.resolve(__dirname,'src/app.jsx')
@@ -25,6 +30,14 @@ module.exports = {
                     options: {
                         presets: ['es2015','react']
                     }
+                }
+            },
+            {
+                test: /\.js$/,
+                exclude: /(node_modules)/,
+                loader: 'babel-loader', // 'babel-loader' is also a legal name to reference
+                query: {
+                    presets: ['es2015']
                 }
             },
             {
@@ -51,7 +64,10 @@ module.exports = {
         new webpack.optimize.CommonsChunkPlugin({name: "vendor", minChunks: Infinity,}),
         new webpack.optimize.UglifyJsPlugin(),
         new HtmlWebpackPlugin({template: './src/index.html'}),
-        new ExtractTextPlugin("styles/app.css")
+        new ExtractTextPlugin("styles/app.css"),
+        new CopyWebpackPlugin([
+            { from: './src/styles' , to: 'styles'}
+        ])
     ]
 
 };

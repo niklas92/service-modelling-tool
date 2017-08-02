@@ -1,10 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Example project for using React with ES6 and Webpack 3 </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Query Service Modeling</title>
+    <link rel="icon" type="image/x-icon" href="styles/img/gql_icon.png">
+    <!-- Font Awesome-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS-->
+    <link rel="stylesheet" href="styles/css/bootstrap.css">
+    <!-- Material Design Bootstrap-->
+    <link rel="stylesheet" href="styles/css/mdb.css">
+    <link rel="stylesheet" href="styles/css/style.css">
 </head>
 <body>
-    <div id="app"></div>
+    <header>
+        <!-- Navbar-->
+        <nav class="navbar navbar-toggleable-md navbar-dark">
+            <div class="container">
+                <button type="button" data-toggle="collapse" data-target="#navbarNav1" aria-controls="navbarNav1" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler navbar-toggler-right"><span class="navbar-toggler-icon"></span></button><a href="/" class="navbar-brand"><strong>Query Service Model</strong></a>
+                <div id="navbarNav1" class="collapse navbar-collapse">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item"><a id="schemaNavItem" href="/" class="nav-link">Schema</a></li>
+                        <li class="nav-item"><a id="resolversNavItem" href="/resolvers" class="nav-link">Resolvers</a></li>
+                        <li class="nav-item dropdown btn-group"><a id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Edit</a>
+                            <div aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown"><a href="/schema" class="dropdown-item">Edit Schema</a><a href="/resolvers" class="dropdown-item">Edit Resolvers</a></div>
+                        </li>
+                    </ul>
+                </div>
+                <div id="navbarNav2" class="collapse navbar-collapse">
+                    <ul class="navbar-nav mr-auto"></ul>
+                    <form class="form-inline waves-effect waves-light">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item"><a href="/graphiql" class="nav-link">Test Schema</a></li>
+                            <li class="nav-item"><a href="/generateServer" class="nav-link">Generate Server</a></li>
+                        </ul>
+                    </form>
+                </div>
+            </div>
+        </nav>
+        <!-- /.Navbar-->
+    </header>
+
+    <main>
+        <div class="container">
+            <div id="app"></div>
+        </div>
+    </main>
+
+    <footer class="footer-test">
+        <div layout="row" class="footer-test-div">
+            Master Thesis Test
+        </div>
+    </footer>
+
+    <!-- SCRIPTS-->
+    <!-- JQuery-->
+    <script type="text/javascript" src="styles/js/jquery-2.2.3.js"></script>
+    <!--mustache-->
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.7.0/mustache.min.js"></script>
+    <!-- Bootstrap tooltips-->
+    <script type="text/javascript" src="styles/js/tether.js"></script>
+    <!-- Bootstrap core JavaScript-->
+    <script type="text/javascript" src="styles/js/bootstrap.js"></script>
+    <!-- MDB core JavaScript-->
+    <script type="text/javascript" src="styles/js/mdb.js"></script>
+    <script>new WOW().init();</script>
 </body>
 </html>
