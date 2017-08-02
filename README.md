@@ -1,5 +1,5 @@
-# React using ES6 & Webpack
-Example project for using React with ES6 & Webpack 3
+# Query Service Modelling Application
+A web application to let the developer specify the query service model.
 
 ## Getting Started
 
@@ -7,28 +7,20 @@ To get you started you can simply clone the [react-es6-webpack](https://github.c
 
 ### Prerequisites
 
-You need git to clone the [react-es6-webpack](https://github.com/adrianhdezm/react-es6-webpack)  repository. You can get git from
+You need git to clone the [service-modelling-tool](https://github.com/niklas92/service-modelling-tool)  repository. You can get git from
 [http://git-scm.com/](http://git-scm.com/).
 
-We also use a number of node.js tools to initialize and test [react-es6-webpack](https://github.com/adrianhdezm/react-es6-webpack) . You must have node.js and
+We also use a number of node.js tools to initialize and test [service-modelling-tool](https://github.com/niklas92/service-modelling-tool) . You must have node.js and
 its package manager (npm) installed.  You can get them from [http://nodejs.org/](http://nodejs.org/).
 
 ### Clone the project
 
-Clone the [react-es6-webpack](https://github.com/adrianhdezm/react-es6-webpack)  repository using [git](http://git-scm.com/):
+Clone the [service-modelling-tool](https://github.com/niklas92/service-modelling-tool)  repository using [git](http://git-scm.com/):
 
 ```bash
-git clone https://github.com/adrianhdezm/react-es6-webpack.git
-cd react-es6-webpack
+git clone https://github.com/niklas92/service-modelling-tool.git
+cd service-modelling-tool
 ```
-
-If you just want to start a new project without the [react-es6-webpack](https://github.com/adrianhdezm/react-es6-webpack)  commit history then you can do:
-
-```bash
-git clone --depth=1 https://github.com/adrianhdezm/react-es6-webpack.git <your-project-name>
-```
-
-The `depth=1` tells git to only pull down one commit worth of historical data.
 
 ### Install Dependencies
 
