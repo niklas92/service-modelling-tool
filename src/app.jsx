@@ -9,13 +9,17 @@ class App extends React.Component {
     render() {
         return (
             <div className="container">
-                <ServiceConfig/>
                 <div className="row">
-                    <div className="col-lg-6">
-                        <DataModel entity="Tasks"/>
-                    </div>
-                    <div className="col-lg-6">
+                    <div className="col-lg-12">
+                        <div className="divider-new">
+                            <h2 className="h2-responsive">Construct the {this.props.modelName}</h2>
+                        </div>
+                        <ServiceConfig/>
+                        <DataModel/>
                         <Resolver/>
+                        <div>
+                            <button type="submit" className="btn btn-default float-right">Generate Server</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -24,4 +28,4 @@ class App extends React.Component {
 
 }
 
-ReactDOM.render(<App/>, document.getElementById('app'));
+ReactDOM.render(<App modelName="Query Service Model"/>, document.getElementById('app'));
