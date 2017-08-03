@@ -63,7 +63,7 @@ class Resolver extends React.Component {
                                         <label>URL</label>
                                     </div>
                                     <div className="md-form">
-                                        <input type="text" className="form-control"/>
+                                        <input name="parName" type="text" className="form-control"/>
                                         <label>HTTP Method</label>
                                     </div>
                                     <div className="row">
