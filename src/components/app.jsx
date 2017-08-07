@@ -10,7 +10,9 @@ class App extends React.Component {
         super(props);
         this.state = {appName: ''};
         this.serviceModel = {
-            serviceConfig: {}
+            serviceConfig: {},
+            dataModel: {},
+            resolvers: {}
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -18,15 +20,13 @@ class App extends React.Component {
     }
 
     setServiceConfig(serviceConfig){
-        console.log("in app");
-        console.log(serviceConfig);
         this.serviceModel.serviceConfig = serviceConfig;
     }
 
     handleSubmit(event) {
-        alert('A name was submitted: ' + this.state.appName);
+        alert('A name was submitted: ' + this.serviceModel.serviceConfig.appName);
         console.log('Service Model:');
-        console.log(this.serviceModel);
+        console.log(JSON.stringify(this.serviceModel));
         event.preventDefault();
     }
 
@@ -38,10 +38,10 @@ class App extends React.Component {
                         <div className="divider-new">
                             <h2 className="h2-responsive">Construct the {this.props.modelName}</h2>
                         </div>
-                        <DataModel/>
-                        <Resolver/>
                         <form onSubmit={this.handleSubmit}>
                             <ServiceConfig setServiceConfig={this.setServiceConfig}/>
+                            <DataModel/>
+                            {/*<Resolver/>*/}
                             <div>
                                 <button type="submit" value="Submit" className="btn btn-default float-right">Generate Server</button>
                             </div>
