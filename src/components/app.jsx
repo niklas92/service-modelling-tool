@@ -6,8 +6,10 @@ import DataModel from './dataModel.jsx';
 import Resolver from './resolver.jsx';
 
 import CodeGenerator from '../actions/codeGenerator';
+import ModelTransformer from '../actions/modelTransformer';
 
 class App extends React.Component {
+    
     constructor(props) {
         super(props);
         this.state = {appName: ''};
@@ -17,7 +19,7 @@ class App extends React.Component {
             resolvers: {}
         };
 
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleGenerateServer = this.handleGenerateServer.bind(this);
         this.setServiceConfig = this.setServiceConfig.bind(this);
     }
 
@@ -25,12 +27,14 @@ class App extends React.Component {
         this.serviceModel.serviceConfig = serviceConfig;
     }
 
-    handleSubmit(event) {
-        console.log('handle submit');
-        alert('A name was submitted: ' + this.serviceModel.serviceConfig.appName);
-        console.log('Service Model:');
-        console.log(JSON.stringify(this.serviceModel));
-        CodeGenerator.renderServerFile(this.serviceModel.serviceConfig.appName, this.serviceModel.serviceConfig.port);
+    //when user entered all fields and clicks on 'generate server' button
+    handleGenerateServer(event) {
+        //transform service model (PIM) to GraphQL model (PSM)
+        var serverModel = ModelTransformer.transformToServerModel(this.serviceModel);
+        var packageModel = ModelTransformer.transformToPackageModel(this.serviceModel);
+
+        //transform from GraphQL model to code
+        CodeGenerator.renderServerFile(serverModel, packageModel);
         event.preventDefault();
     }
 
@@ -42,7 +46,7 @@ class App extends React.Component {
                         <div className="divider-new">
                             <h2 className="h2-responsive">Construct the {this.props.modelName}</h2>
                         </div>
-                        <form onSubmit={this.handleSubmit}>
+                        <form onSubmit={this.handleGenerateServer}>
                             <ServiceConfig setServiceConfig={this.setServiceConfig}/>
                             {/*<DataModel/>*/}
                             {/*<Resolver/>*/}

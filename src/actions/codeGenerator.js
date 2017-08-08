@@ -3,18 +3,7 @@ import JSZip from 'jszip';
 import FileSaver from 'file-saver';
 
 
-exports.renderServerFile = function (appName, portNr) {
-
-    //Mustache Contexts
-    var server_object = {
-        port: portNr,
-        schema: 'testSchema',
-        resolvers: 'testResolver'
-    };
-
-    var package_object = {
-        appName: appName
-    };
+exports.renderServerFile = function (serverModel, packageModel) {
 
     //Get mustache templates with jquery as promises
     var severTemplatePromise = $.get('/mustache-templates/server.mustache');
@@ -24,8 +13,8 @@ exports.renderServerFile = function (appName, portNr) {
     Promise.all([severTemplatePromise, packageTemplatePromise]).then(function(templates){
 
         //render contexts into templates
-        var serverOutput = Mustache.render(templates[0], server_object);
-        var packageOutput = Mustache.render(templates[1], package_object);
+        var serverOutput = Mustache.render(templates[0], serverModel);
+        var packageOutput = Mustache.render(templates[1], packageModel);
 
         //create server as a zip folder
         var serverZip = new JSZip();
