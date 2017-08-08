@@ -5,6 +5,8 @@ import ServiceConfig from './serviceConfig.jsx';
 import DataModel from './dataModel.jsx';
 import Resolver from './resolver.jsx';
 
+import CodeGenerator from '../actions/codeGenerator';
+
 class App extends React.Component {
     constructor(props) {
         super(props);
@@ -24,9 +26,11 @@ class App extends React.Component {
     }
 
     handleSubmit(event) {
+        console.log('handle submit');
         alert('A name was submitted: ' + this.serviceModel.serviceConfig.appName);
         console.log('Service Model:');
         console.log(JSON.stringify(this.serviceModel));
+        CodeGenerator.renderServerFile(this.serviceModel.serviceConfig.appName, this.serviceModel.serviceConfig.port);
         event.preventDefault();
     }
 
@@ -40,7 +44,7 @@ class App extends React.Component {
                         </div>
                         <form onSubmit={this.handleSubmit}>
                             <ServiceConfig setServiceConfig={this.setServiceConfig}/>
-                            <DataModel/>
+                            {/*<DataModel/>*/}
                             {/*<Resolver/>*/}
                             <div>
                                 <button type="submit" value="Submit" className="btn btn-default float-right">Generate Server</button>

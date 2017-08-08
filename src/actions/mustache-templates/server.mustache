@@ -1,0 +1,34 @@
+import express from 'express';
+import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
+import { makeExecutableSchema } from 'graphql-tools';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+
+const GRAPHQL_PORT = {{port}};
+
+const schema = `{{schema}}`;
+
+const resolvers = {{{resolvers}}};
+
+const app = express().use('*', cors());
+
+app.use('/graphql', bodyParser.json(), graphqlExpress({
+schema: makeExecutableSchema({
+typeDefs: schema,
+resolvers,
+}),
+context: {},
+}));
+
+app.use('/graphiql', graphiqlExpress({
+endpointURL: '/graphql',
+}));
+
+app.use('/schema', (req, res) => {
+res.set('Content-Type', 'text/plain');
+res.send(schema);
+});
+
+app.listen(GRAPHQL_PORT, () => console.log(
+`GraphQL Server is now running on http://localhost:${GRAPHQL_PORT}/graphql`
+));
