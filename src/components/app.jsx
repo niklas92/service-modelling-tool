@@ -9,7 +9,7 @@ import CodeGenerator from '../actions/codeGenerator';
 import ModelTransformer from '../actions/modelTransformer';
 
 class App extends React.Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {appName: ''};

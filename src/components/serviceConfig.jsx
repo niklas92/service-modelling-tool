@@ -4,7 +4,7 @@ import React from 'react';
 class ServiceConfig extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {appName: '', port: ''};
+        this.state = {appName: '', port: '', modelChangesSubmitted: true};
 
         this.handleAppNameChange = this.handleAppNameChange.bind(this);
         this.handlePortChange = this.handlePortChange.bind(this);
@@ -12,14 +12,17 @@ class ServiceConfig extends React.Component {
     }
 
     handleAppNameChange(event) {
+        this.setState({modelChangesSubmitted: false});
         this.setState({appName: event.target.value});
     }
 
     handlePortChange(event) {
+        this.setState({modelChangesSubmitted: false});
         this.setState({port: event.target.value});
     }
 
     saveServiceConfig() {
+        this.setState({modelChangesSubmitted: true});
         this.props.setServiceConfig(this.state);
     }
 
@@ -44,7 +47,7 @@ class ServiceConfig extends React.Component {
                         </div>
 
                         <div>
-                            <button onClick={this.saveServiceConfig} type="button" className="btn btn-default float-right">OK</button>
+                            <button onClick={this.saveServiceConfig} type="button" disabled={this.state.modelChangesSubmitted} className="btn btn-default float-right">OK</button>
                         </div>
 
                     </div>

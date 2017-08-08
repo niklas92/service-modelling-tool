@@ -13,22 +13,22 @@ const resolvers = {{{resolvers}}};
 const app = express().use('*', cors());
 
 app.use('/graphql', bodyParser.json(), graphqlExpress({
-schema: makeExecutableSchema({
-typeDefs: schema,
-resolvers,
-}),
-context: {},
+    schema: makeExecutableSchema({
+        typeDefs: schema,
+        resolvers,
+    }),
+    context: {},
 }));
 
 app.use('/graphiql', graphiqlExpress({
-endpointURL: '/graphql',
+    endpointURL: '/graphql',
 }));
 
 app.use('/schema', (req, res) => {
-res.set('Content-Type', 'text/plain');
-res.send(schema);
+    res.set('Content-Type', 'text/plain');
+    res.send(schema);
 });
 
 app.listen(GRAPHQL_PORT, () => console.log(
-`GraphQL Server is now running on http://localhost:${GRAPHQL_PORT}/graphql`
+    `GraphQL Server is now running on http://localhost:${GRAPHQL_PORT}/graphql`
 ));
