@@ -4,9 +4,11 @@ import React from 'react';
 class ServiceConfig extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {appName: '', port: '', modelChangesSubmitted: true};
+        this.state = {appName: '', description: '', author:'', port: '', modelChangesSubmitted: true};
 
         this.handleAppNameChange = this.handleAppNameChange.bind(this);
+        this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
+        this.handleAuthorChange = this.handleAuthorChange.bind(this);
         this.handlePortChange = this.handlePortChange.bind(this);
         this.saveServiceConfig = this.saveServiceConfig.bind(this);
     }
@@ -14,6 +16,16 @@ class ServiceConfig extends React.Component {
     handleAppNameChange(event) {
         this.setState({modelChangesSubmitted: false});
         this.setState({appName: event.target.value});
+    }
+
+    handleDescriptionChange(event) {
+        this.setState({modelChangesSubmitted: false});
+        this.setState({description: event.target.value});
+    }
+
+    handleAuthorChange(event) {
+        this.setState({modelChangesSubmitted: false});
+        this.setState({author: event.target.value});
     }
 
     handlePortChange(event) {
@@ -38,12 +50,22 @@ class ServiceConfig extends React.Component {
 
                         <div className="md-form">
                             <input value={this.state.appName} onChange={this.handleAppNameChange} type="text" className="form-control"/>
-                            <label htmlFor="appName">Application name</label>
+                            <label>Application name</label>
+                        </div>
+
+                        <div className="md-form">
+                            <input value={this.state.author} onChange={this.handleAuthorChange} type="text" className="form-control"/>
+                            <label>Author name</label>
                         </div>
 
                         <div className="md-form">
                             <input value={this.state.port} onChange={this.handlePortChange} type="text" className="form-control"/>
-                            <label htmlFor="port">Port</label>
+                            <label>Port</label>
+                        </div>
+
+                        <div className="md-form">
+                            <textarea value={this.state.description} onChange={this.handleDescriptionChange} type="text" className="md-textarea"></textarea>
+                            <label>Application description</label>
                         </div>
 
                         <div>

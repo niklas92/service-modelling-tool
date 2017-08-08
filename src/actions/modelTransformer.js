@@ -15,7 +15,9 @@ exports.transformToServerModel = function (serviceModel) {
 
 exports.transformToPackageModel = function (serviceModel) {
     var packageModel = {
-        appName: serviceModel.serviceConfig.appName
+        appName: serviceModel.serviceConfig.appName,
+        author: serviceModel.serviceConfig.author,
+        description: serviceModel.serviceConfig.description
     };
 
     return packageModel;
