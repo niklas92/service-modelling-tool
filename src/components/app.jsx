@@ -21,10 +21,15 @@ class App extends React.Component {
 
         this.handleGenerateServer = this.handleGenerateServer.bind(this);
         this.setServiceConfig = this.setServiceConfig.bind(this);
+        this.setDataModel = this.setDataModel.bind(this);
     }
 
     setServiceConfig(serviceConfig){
         this.serviceModel.serviceConfig = serviceConfig;
+    }
+
+    setDataModel(dataModel){
+        this.serviceModel.dataModel = dataModel;
     }
 
     //when user entered all fields and clicks on 'generate server' button
@@ -47,7 +52,7 @@ class App extends React.Component {
                         </div>
                         <form onSubmit={this.handleGenerateServer}>
                             <ServiceConfig setServiceConfig={this.setServiceConfig}/>
-                            <DataModel/>
+                            <DataModel setDataModel={this.setDataModel}/>
                             {/*<Resolver/>*/}
                             <div>
                                 <button type="submit" value="Submit" className="btn btn-default float-right">Generate Server</button>
