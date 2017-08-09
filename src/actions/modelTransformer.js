@@ -32,34 +32,23 @@ var transformToPackageModel = function (serviceModel) {
 };
 
 var transformToSchemaModel = function (serviceModel){
+    var schemaString = '\n';
+
+    //construct the data model for the schema
+    var entities = serviceModel.dataModel;
+    for(var e in entities){
+        var entity = entities[e];
+        schemaString += 'type ' + entity.entityName + ' { \n';
+
+        for(var p in entity.parameters){
+            schemaString += '   ' + entity.parameters[p].parameterName + ': ' + entity.parameters[p].parameterType + '\n';
+        }
+
+        schemaString += '} \n';
+    }
 
     var schemaModel = {
-        schema: `
-            type Author {
-              id: Int! # the ! means that every author object _must_ have an id
-              firstName: String
-              lastName: String
-              posts: [Post] # the list of Posts by this author
-            }
-            type Post {
-              id: Int!
-              title: String
-              author: Author
-              votes: Int
-            }
-            # the schema allows the following query:
-            type Query {
-              posts: [Post]
-              author(id: Int!): Author
-              authors: [Author]
-            }
-            # this schema allows the following mutation:
-            type Mutation {
-              upvotePost (postId: Int!): Post
-              createPost (authorId: Int!, title: String!): Post
-              deletePost (postId: Int!): Post
-            }
-            `
+        schema: schemaString
     };
 
     return schemaModel;
