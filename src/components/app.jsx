@@ -47,7 +47,7 @@ class App extends React.Component {
                         </div>
                         <form onSubmit={this.handleGenerateServer}>
                             <ServiceConfig setServiceConfig={this.setServiceConfig}/>
-                            {/*<DataModel/>*/}
+                            <DataModel/>
                             {/*<Resolver/>*/}
                             <div>
                                 <button type="submit" value="Submit" className="btn btn-default float-right">Generate Server</button>

@@ -47,3 +47,6 @@ footer {
     line-height: 50px;
     text-align: center;
 }
+.table-head{
+    background-color: #414a5c !important;
+}

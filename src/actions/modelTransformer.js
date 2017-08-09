@@ -8,9 +8,6 @@ exports.transformToGraphQLModel = function (serviceModel) {
         resolversModel: transformToResolversModel(serviceModel)
     };
 
-    console.log('GraphQL Model:');
-    console.log(JSON.stringify(gqlModel));
-
     return gqlModel;
 };
 
@@ -34,7 +31,7 @@ var transformToPackageModel = function (serviceModel) {
     return packageModel;
 };
 
-var transformToSchemaModel = function (){
+var transformToSchemaModel = function (serviceModel){
 
     var schemaModel = {
         schema: `
@@ -68,7 +65,7 @@ var transformToSchemaModel = function (){
     return schemaModel;
 };
 
-var transformToResolversModel = function (){
+var transformToResolversModel = function (serviceModel){
 
     var resolversModel = {
         resolvers: `{
