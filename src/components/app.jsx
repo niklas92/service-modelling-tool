@@ -30,11 +30,10 @@ class App extends React.Component {
     //when user entered all fields and clicks on 'generate server' button
     handleGenerateServer(event) {
         //transform service model (PIM) to GraphQL model (PSM)
-        var serverModel = ModelTransformer.transformToServerModel(this.serviceModel);
-        var packageModel = ModelTransformer.transformToPackageModel(this.serviceModel);
+        var gqlModel = ModelTransformer.transformToGraphQLModel(this.serviceModel);
 
         //transform from GraphQL model to code
-        CodeGenerator.renderServerFile(serverModel, packageModel);
+        CodeGenerator.renderServerFile(gqlModel);
         event.preventDefault();
     }
 

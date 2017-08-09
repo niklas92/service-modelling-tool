@@ -1,22 +1,17 @@
 import express from 'express';
 import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
-import { makeExecutableSchema } from 'graphql-tools';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import { printSchema } from 'graphql/utilities/schemaPrinter';
+
+import schema from './data/schema';
 
 const GRAPHQL_PORT = {{port}};
-
-const schema = `{{schema}}`;
-
-const resolvers = {{{resolvers}}};
 
 const app = express().use('*', cors());
 
 app.use('/graphql', bodyParser.json(), graphqlExpress({
-    schema: makeExecutableSchema({
-        typeDefs: schema,
-        resolvers,
-    }),
+    schema,
     context: {},
 }));
 
@@ -26,7 +21,7 @@ app.use('/graphiql', graphiqlExpress({
 
 app.use('/schema', (req, res) => {
     res.set('Content-Type', 'text/plain');
-    res.send(schema);
+    res.send(printSchema(schema));
 });
 
 app.listen(GRAPHQL_PORT, () => console.log(
