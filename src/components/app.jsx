@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import ServiceConfig from './serviceConfig.jsx';
 import DataModel from './dataModel.jsx';
-import Resolver from './resolver.jsx';
+import ResolversModel from './resolversModel.jsx';
 
 import CodeGenerator from '../actions/codeGenerator';
 import ModelTransformer from '../actions/modelTransformer';
@@ -22,6 +22,7 @@ class App extends React.Component {
         this.handleGenerateServer = this.handleGenerateServer.bind(this);
         this.setServiceConfig = this.setServiceConfig.bind(this);
         this.setDataModel = this.setDataModel.bind(this);
+        this.setResolversModel = this.setResolversModel.bind(this);
     }
 
     setServiceConfig(serviceConfig){
@@ -30,6 +31,12 @@ class App extends React.Component {
 
     setDataModel(dataModel){
         this.serviceModel.dataModel = dataModel;
+        console.log("serviceModel.dataModel: " + JSON.stringify(this.serviceModel.dataModel));
+    }
+
+    setResolversModel(resolversModel){
+        this.serviceModel.resolvers = resolversModel;
+        console.log("serviceModel.resolvers: " + JSON.stringify(this.serviceModel.resolvers));
     }
 
     //when user entered all fields and clicks on 'generate server' button
@@ -53,7 +60,7 @@ class App extends React.Component {
                         <form onSubmit={this.handleGenerateServer}>
                             <ServiceConfig setServiceConfig={this.setServiceConfig}/>
                             <DataModel setDataModel={this.setDataModel}/>
-                            {/*<Resolver/>*/}
+                            <ResolversModel setResolversModel={this.setResolversModel}/>
                             <div>
                                 <button type="submit" value="Submit" className="btn btn-default float-right">Generate Server</button>
                             </div>

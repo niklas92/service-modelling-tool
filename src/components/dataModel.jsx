@@ -1,4 +1,5 @@
 import React from 'react';
+import {find, findIndex} from 'lodash';
 import DataEntity from './dataEntity.jsx';
 
 class DataModel extends React.Component {
@@ -32,15 +33,11 @@ class DataModel extends React.Component {
 
     saveDataEntity(entity) {
         var entityArray = this.state.entities;
-        var index;
+        var index = findIndex(entityArray, {entityId: entity.entityId});
 
-        for(var e in entityArray)
-            if (entity.entityId == entityArray[e].entityId)
-                index = e;
-
-        if(index) {
-            entityArray[index].entityName = entity.entityName;
-            entityArray[index].parameters = entity.parameters;
+        if(index >= 0) {
+            //replace old entity with new one
+            entityArray.splice(index, 1, entity);
             this.setState({entities: entityArray});
 
             //update data model in app component
@@ -50,13 +47,9 @@ class DataModel extends React.Component {
 
     deleteDataEntity(entityId) {
         var entityArray = this.state.entities;
-        var index;
+        var index = findIndex(entityArray, {entityId: entityId});
 
-        for(var e in entityArray)
-            if (entityId == entityArray[e].entityId)
-                index = e;
-
-        if(index) {
+        if(index >= 0) {
             entityArray.splice(index, 1);
             this.setState({entities: entityArray});
 

@@ -1,10 +1,16 @@
 import React from 'react';
-
+import {find, findIndex} from 'lodash';
 
 class DataEntity extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {entityName: '', parameters: [], parameterName: '', parameterType: '', modelChangesSubmitted: true};
+        this.state = {
+            entityName: '',
+            parameters: [],
+            parameterName: '',
+            parameterType: '',
+            modelChangesSubmitted: true
+        };
 
         this.handleEntityNameChange = this.handleEntityNameChange.bind(this);
         this.handleParameterNameChange = this.handleParameterNameChange.bind(this);
@@ -53,16 +59,12 @@ class DataEntity extends React.Component {
     deleteParameter(event) {
         this.setState({modelChangesSubmitted: false});
         var parameters = this.state.parameters;
-        var index;
+        var index = findIndex(parameters, {parameterId: parseInt(event.target.value)});
 
-        for(var p in parameters)
-            if (event.target.value == parameters[p].parameterId)
-                index = p;
-
-        if(index)
+        if(index >= 0) {
             parameters.splice(index, 1);
-
-        this.setState({parameters: parameters});
+            this.setState({parameters: parameters});
+        }
     }
 
     saveDataEntity() {
@@ -92,7 +94,7 @@ class DataEntity extends React.Component {
                     <br/>
 
                     <div className="md-form">
-                        <input value={this.state.appName} onChange={this.handleEntityNameChange} type="text" className="form-control"/>
+                        <input value={this.state.entityName} onChange={this.handleEntityNameChange} type="text" className="form-control"/>
                         <label>Entity name</label>
                     </div>
 

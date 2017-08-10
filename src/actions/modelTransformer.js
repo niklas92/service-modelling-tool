@@ -40,6 +40,7 @@ var transformToSchemaModel = function (serviceModel){
         var entity = entities[e];
         schemaString += 'type ' + entity.entityName + ' { \n';
 
+        console.log("transform: " + JSON.stringify(entity));
         for(var p in entity.parameters){
             schemaString += '   ' + entity.parameters[p].parameterName + ': ' + entity.parameters[p].parameterType + '\n';
         }
