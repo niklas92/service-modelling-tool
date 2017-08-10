@@ -1,5 +1,6 @@
 import React from 'react';
 import {find, findIndex} from 'lodash';
+import APIRequest from './apiRequest.jsx';
 
 class ResolverEntity extends React.Component {
     constructor(props) {
@@ -8,7 +9,7 @@ class ResolverEntity extends React.Component {
             resolverName: '',
             returnType: '',
             arguments: [],
-            apiRequest: {},
+            apiRequests: [],
             argumentName: '',
             argumentType: '',
             modelChangesSubmitted: true
@@ -22,7 +23,9 @@ class ResolverEntity extends React.Component {
         this.deleteArgument = this.deleteArgument.bind(this);
         this.saveResolver = this.saveResolver.bind(this);
         this.deleteResolver = this.deleteResolver.bind(this);
-        this.addHeaderParameter = this.addHeaderParameter.bind(this);
+        this.newAPIRequest = this.newAPIRequest.bind(this);
+        this.saveAPIRequest = this.saveAPIRequest.bind(this);
+        this.deleteAPIRequest = this.deleteAPIRequest.bind(this);
     }
 
 
@@ -83,7 +86,8 @@ class ResolverEntity extends React.Component {
             resolverId: this.props.resolverId,
             resolverName: this.state.resolverName,
             returnType: this.state.returnType,
-            arguments: this.state.arguments
+            arguments: this.state.arguments,
+            apiRequests: this.state.apiRequests
         };
         this.props.saveResolver(resolver);
     }
@@ -92,8 +96,49 @@ class ResolverEntity extends React.Component {
         this.props.deleteResolver(this.props.resolverId);
     }
 
-    addHeaderParameter() {
-        console.log('Add a new header parameter');
+    newAPIRequest() {
+        var requestsArray = this.state.apiRequests;
+
+        //create id
+        var reqId = 0;
+        if(requestsArray.length > 0){
+            reqId = requestsArray[requestsArray.length-1].requestId +1;
+        }
+
+        //add new entity
+        requestsArray.push({
+            requestId: reqId,
+            url: '',
+            httpMethod: '',
+            body: '',
+            parameters: []
+        });
+
+        this.setState({apiRequests: requestsArray});
+    }
+
+    saveAPIRequest(apiReq) {
+        this.setState({modelChangesSubmitted: false});
+        var requestsArray = this.state.apiRequests;
+        var index = findIndex(requestsArray, {requestId: apiReq.requestId});
+
+        if(index >= 0) {
+            //replace old apiRequest with new one
+            requestsArray.splice(index, 1, apiReq);
+            this.setState({apiRequests: requestsArray});
+        }
+    }
+
+    deleteAPIRequest(reqId) {
+        this.setState({modelChangesSubmitted: false});
+        var requestsArray = this.state.apiRequests;
+        var index = findIndex(requestsArray, {requestId: reqId});
+
+        if(index >= 0) {
+            //remove request from array and update state
+            requestsArray.splice(index, 1);
+            this.setState({apiRequests: requestsArray});
+        }
     }
 
     render() {
@@ -159,38 +204,20 @@ class ResolverEntity extends React.Component {
                     </table>
 
                     <p><strong>API Request</strong></p>
-                    <p>Define an API request</p>
 
-                    <div className="md-form">
-                        <input type="text" className="form-control"/>
-                        <label>URL</label>
-                    </div>
-
-                    <div className="md-form">
-                        <input name="parName" type="text" className="form-control"/>
-                        <label>HTTP method</label>
-                    </div>
-
-                    <div className="row">
-                        <div className="col-lg-6">
-                            <div className="md-form">
-                                <input name="parName" type="text" className="form-control"/>
-                                <label>Header parameter name</label>
-                            </div>
-                        </div>
-                        <div className="col-lg-6">
-                            <div className="md-form">
-                                <input name="parType" type="text" className="form-control"/>
-                                <label>Header parameter type</label>
-                            </div>
-                        </div>
-                    </div>
+                    {
+                        this.state.apiRequests.map(function(req) {
+                            return (
+                                <div key={req.requestId}>
+                                    <APIRequest saveRequest={scope.saveAPIRequest} deleteRequest={scope.deleteAPIRequest} requestId={req.requestId}/>
+                                    <br/>
+                                </div>
+                            );
+                        })
+                    }
 
                     <div>
-                        <button onClick={this.addHeaderParameter} type="button" className="btn btn-sm">Add Header Parameter</button>
-                    </div>
-                    <div>
-                        <button type="button" className="btn btn-default">Add Authentication</button>
+                        <button onClick={this.newAPIRequest} type="button" className="btn btn-sm">Add API Request</button>
                     </div>
 
 
