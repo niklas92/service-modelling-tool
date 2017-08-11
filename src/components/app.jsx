@@ -48,6 +48,8 @@ class App extends React.Component {
 
     //when user entered all fields and clicks on 'generate server' button
     handleGenerateServer(event) {
+        console.log("serviceModel: " + JSON.stringify(this.serviceModel));
+
         //transform service model (PIM) to GraphQL model (PSM)
         var gqlModel = ModelTransformer.transformToGraphQLModel(this.serviceModel);
 

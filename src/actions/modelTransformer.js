@@ -32,27 +32,64 @@ var transformToPackageModel = function (serviceModel) {
 };
 
 var transformToSchemaModel = function (serviceModel){
-    var schemaString = '\n';
+    var dataModelString = '';
 
     //construct the data model for the schema
     var entities = serviceModel.dataModel;
     for(var e in entities){
         var entity = entities[e];
-        schemaString += 'type ' + entity.entityName + ' { \n';
+        dataModelString += 'type ' + entity.entityName + ' { \n';
 
-        console.log("transform: " + JSON.stringify(entity));
         for(var p in entity.parameters){
-            schemaString += '   ' + entity.parameters[p].parameterName + ': ' + entity.parameters[p].parameterType + '\n';
+            dataModelString += '   ' + entity.parameters[p].parameterName + ': ' + entity.parameters[p].parameterType + '\n';
         }
 
-        schemaString += '} \n';
+        dataModelString += '}\n';
+    }
+
+    var queryString = '';
+    var mutationString = '';
+
+    //construct the resolver model for the schema
+    var resolvers = serviceModel.resolvers;
+    for(var r in resolvers){
+        var resolver = resolvers[r];
+        if(resolver.apiRequests[0].httpMethod == 'GET'){
+            queryString += '\n    ' + constructSchemaResolver(resolver);
+        }else{
+            mutationString += '\n    ' + constructSchemaResolver(resolver);
+        }
+
     }
 
     var schemaModel = {
-        schema: schemaString
+        dataModel: dataModelString,
+        queries: queryString,
+        mutations: mutationString
     };
 
     return schemaModel;
+};
+
+var constructSchemaResolver =  function (resolverModel){
+    var schemaResolver = resolverModel.resolverName;
+
+    //if resolver has arguments add each arg in function e.g. (id: Int, name: String)
+    if(resolverModel.arguments.length > 0){
+        schemaResolver += '(';
+
+        for(var a in resolverModel.arguments){
+            if(a>0)
+                schemaResolver += ', ';
+            var arg = resolverModel.arguments[a];
+            schemaResolver += arg.argumentName + ': ' + arg.argumentType;
+        }
+
+        schemaResolver += ')';
+    }
+    schemaResolver += ': ' + resolverModel.returnType;
+
+    return schemaResolver;
 };
 
 var transformToResolversModel = function (serviceModel){

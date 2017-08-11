@@ -2,7 +2,16 @@ import { makeExecutableSchema } from 'graphql-tools';
 
 import resolvers from './resolvers';
 
-var schema = `{{schema}}`;
+var schema = `
+{{dataModel}}
+# the schema allows the following query:
+type Query { {{queries}}
+}
+
+# this schema allows the following mutation:
+type Mutation { {{mutations}}
+}
+`;
 
 export default makeExecutableSchema({
     typeDefs: schema,
