@@ -59,7 +59,7 @@ class ServiceConfig extends React.Component {
                         </div>
 
                         <div className="md-form">
-                            <input value={this.state.port} onChange={this.handlePortChange} type="text" className="form-control"/>
+                            <input value={this.state.port} onChange={this.handlePortChange} type="number" className="form-control"/>
                             <label>Port</label>
                         </div>
 
