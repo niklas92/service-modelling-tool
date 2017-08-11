@@ -8,6 +8,10 @@ import ResolversModel from './resolversModel.jsx';
 import CodeGenerator from '../actions/codeGenerator';
 import ModelTransformer from '../actions/modelTransformer';
 
+//needed for select of material-ui
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
 class App extends React.Component {
 
     constructor(props) {
@@ -18,6 +22,9 @@ class App extends React.Component {
             dataModel: {},
             resolvers: {}
         };
+
+        //needed for select of material-ui
+        injectTapEventPlugin();
 
         this.handleGenerateServer = this.handleGenerateServer.bind(this);
         this.setServiceConfig = this.setServiceConfig.bind(this);
@@ -51,23 +58,25 @@ class App extends React.Component {
 
     render() {
         return (
-            <div className="container">
-                <div className="row">
-                    <div className="col-lg-12">
-                        <div className="divider-new">
-                            <h2 className="h2-responsive">Construct the {this.props.modelName}</h2>
-                        </div>
-                        <form onSubmit={this.handleGenerateServer}>
-                            <ServiceConfig setServiceConfig={this.setServiceConfig}/>
-                            <DataModel setDataModel={this.setDataModel}/>
-                            <ResolversModel setResolversModel={this.setResolversModel}/>
-                            <div>
-                                <button type="submit" value="Submit" className="btn btn-default float-right">Generate Server</button>
+            <MuiThemeProvider>
+                <div className="container">
+                    <div className="row">
+                        <div className="col-lg-12">
+                            <div className="divider-new">
+                                <h2 className="h2-responsive">Construct the {this.props.modelName}</h2>
                             </div>
-                        </form>
+                            <form onSubmit={this.handleGenerateServer}>
+                                <ServiceConfig setServiceConfig={this.setServiceConfig}/>
+                                <DataModel setDataModel={this.setDataModel}/>
+                                <ResolversModel setResolversModel={this.setResolversModel}/>
+                                <div>
+                                    <button type="submit" value="Submit" className="btn btn-default float-right">Generate Server</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </MuiThemeProvider>
         );
     }
 

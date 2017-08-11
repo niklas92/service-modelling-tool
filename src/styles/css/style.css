@@ -50,3 +50,6 @@ footer {
 .table-head{
     background-color: #414a5c !important;
 }
+.table th, .table td {
+    vertical-align: middle;
+}

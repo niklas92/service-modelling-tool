@@ -1,12 +1,15 @@
 import React from 'react';
 import {find, findIndex} from 'lodash';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+
 
 class APIRequest extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             url: '',
-            httpMethod: '',
+            httpMethod: 'GET',
             body: '',
             parameters: [],
             parameterName: '',
@@ -31,8 +34,9 @@ class APIRequest extends React.Component {
         });
     }
 
-    handleHTTPMethodChange(event) {
-        this.setState({httpMethod: event.target.value}, function(){
+    handleHTTPMethodChange(event, index, value) {
+        this.setState({httpMethod: value}, function(){
+            console.log(JSON.stringify(this.state));
             this.saveAPIRequest();
         });
     }
@@ -51,8 +55,8 @@ class APIRequest extends React.Component {
         this.setState({parameterValue: event.target.value});
     }
 
-    handleParameterTypeChange(event) {
-        this.setState({parameterType: event.target.value});
+    handleParameterTypeChange(event, index, value) {
+        this.setState({parameterType: value});
     }
 
     addParameter(){
@@ -120,15 +124,18 @@ class APIRequest extends React.Component {
                     <label>URL</label>
                 </div>
 
-                <div value={this.state.httpMethod} onChange={this.handleHTTPMethodChange} className="md-form">
-                    <select className="mdb-select colorful-select dropdown-default">
-                        <option value="GET">GET</option>
-                        <option value="POST">POST</option>
-                        <option value="PUT">PUT</option>
-                        <option value="DELETE">DELETE</option>
-                    </select>
-                    <label>HTTP Method</label>
-                </div>
+                <SelectField
+                    floatingLabelText="HTTP Method"
+                    value={this.state.httpMethod}
+                    onChange={this.handleHTTPMethodChange}
+                    className="md-form"
+                    floatingLabelStyle={{color: '#757575'}}
+                    style={{width: '100%'}}>
+                    <MenuItem value="GET" primaryText="GET" />
+                    <MenuItem value="POST" primaryText="POST" />
+                    <MenuItem value="PUT" primaryText="PUT" />
+                    <MenuItem value="DELETE" primaryText="DELETE" />
+                </SelectField>
 
                 <div value={this.state.body} onChange={this.handleBodyChange} className="md-form">
                     <input type="text" className="form-control"/>
@@ -168,7 +175,13 @@ class APIRequest extends React.Component {
                             <input value={this.state.parameterValue} onChange={this.handleParameterValueChange} type="text" className="form-control"/>
                         </td>
                         <td>
-                            <input value={this.state.parameterType} onChange={this.handleParameterTypeChange} type="text" className="form-control"/>
+                            <SelectField
+                                value={this.state.parameterType}
+                                onChange={this.handleParameterTypeChange}
+                                style={{verticalAlign: 'bottom'}}>
+                                <MenuItem value="Header" primaryText="Header" />
+                                <MenuItem value="Authentication" primaryText="Authentication"/>
+                            </SelectField>
                         </td>
                         <td>
                             <button onClick={this.addParameter} type="button" className="btn btn-sm">Add</button>
