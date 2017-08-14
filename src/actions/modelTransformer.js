@@ -106,28 +106,25 @@ var transformToResolversModel = function (serviceModel){
     for(var r in resolvers){
         var resolver = resolvers[r];
 
-        var resolverFunction = makeResolverFunction(resolver);
+        var resolverFunction = constructResolverFunction(resolver);
 
         if(resolver.apiRequests[0].httpMethod == "GET"){
-            queriesString += '\n        ' + resolverFunction + ',';
+            queriesString += resolverFunction;
         }else{
-            mutationsString += '\n      ' + resolverFunction + ',';
+            mutationsString += resolverFunction;
         }
 
     }
-
 
     var resolversModel = {
         queries: queriesString,
         mutations: mutationsString
     };
 
-    console.log('resolversModel: ' + JSON.stringify(resolversModel));
-
     return resolversModel;
 };
 
-var makeResolverFunction = function (resolver){
+var constructResolverFunction = function (resolver){
 
     var args = '';
     for(var a in resolver.arguments){
@@ -137,15 +134,18 @@ var makeResolverFunction = function (resolver){
     }
 
     var auth = '';
-    var headers = {};
+    var headers = '{';
     for(var p in resolver.apiRequests[0].parameters){
         var param = resolver.apiRequests[0].parameters[p];
         if(param.type == 'Authentication'){
             auth = param.parameterName + ':' + param.parameterValue;
         }else{
-            headers[param.parameterName] = param.parameterValue;
+            if(headers.length != 1)
+                headers += ', ';
+            headers += '\"' + param.parameterName + '\": ' + param.parameterValue;
         }
     }
+    headers += '}';
 
     var body;
     if(resolver.apiRequests[0].body != "")
@@ -160,16 +160,11 @@ var makeResolverFunction = function (resolver){
         body: body,
         httpMethod: resolver.apiRequests[0].httpMethod,
         authentication: auth,
-        headerParameters: JSON.stringify(headers)
-
+        headerParameters: headers
     };
-
-    console.log('resolverFunctionContext: ' + JSON.stringify(resolverFunctionContext));
 
     //render contexts into templates
     var resolverFunction = Mustache.render(resolverSingleReq, resolverFunctionContext);
-
-    console.log('resolverFunction: \n' + resolverFunction);
 
     return resolverFunction;
 };
