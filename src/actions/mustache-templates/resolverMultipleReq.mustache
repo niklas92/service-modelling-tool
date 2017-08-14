@@ -1,0 +1,15 @@
+{{resolverName}}(_, { {{arguments}} }) {
+
+    {{{apiRequests}}}
+    //resolve all API requests
+    return Promise.all([{{apiRequestVars}}]).then(function(resp){
+
+        /*
+        * TODO: INSERT MANUAL CODE REFINEMENT HERE
+        * (transformed the data from the different api requests
+        * and return it)
+        */
+        return resp;
+
+    }).catch((err) => console.error(err));
+},

@@ -1,5 +1,7 @@
 import Mustache from 'mustache';
-import resolverSingleReq from './mustache-templates/resolverSingleReq.mustache';
+import resolverSingleReqTemplate from './mustache-templates/resolverSingleReq.mustache';
+import resolverMultipleReqTemplate from './mustache-templates/resolverMultipleReq.mustache';
+import apiRequestTemplate from './mustache-templates/apiRequest.mustache';
 
 exports.transformToGraphQLModel = function (serviceModel) {
 
@@ -56,10 +58,12 @@ var transformToSchemaModel = function (serviceModel){
     var resolvers = serviceModel.resolvers;
     for(var r in resolvers){
         var resolver = resolvers[r];
-        if(resolver.apiRequests[0].httpMethod == 'GET'){
-            queryString += '\n    ' + constructSchemaResolver(resolver);
-        }else{
-            mutationString += '\n    ' + constructSchemaResolver(resolver);
+        if(resolver.apiRequests.length > 0) {
+            if (resolver.apiRequests.length > 0 && resolver.apiRequests[0].httpMethod != "GET") {
+                mutationString += '\n    ' + constructSchemaResolver(resolver);
+            } else {
+                queryString += '\n    ' + constructSchemaResolver(resolver);
+            }
         }
 
     }
@@ -106,12 +110,17 @@ var transformToResolversModel = function (serviceModel){
     for(var r in resolvers){
         var resolver = resolvers[r];
 
-        var resolverFunction = constructResolverFunction(resolver);
-
-        if(resolver.apiRequests[0].httpMethod == "GET"){
-            queriesString += resolverFunction;
+        var resolverFunction;
+        if(resolver.apiRequests.length <= 1){
+            resolverFunction = constructResolverFunctionSingleAPI(resolver);
         }else{
+            resolverFunction = constructResolverFunctionMultiAPI(resolver)
+        }
+
+        if(resolver.apiRequests.length > 0 && resolver.apiRequests[0].httpMethod != "GET"){
             mutationsString += resolverFunction;
+        }else{
+            queriesString += resolverFunction;
         }
 
     }
@@ -124,7 +133,7 @@ var transformToResolversModel = function (serviceModel){
     return resolversModel;
 };
 
-var constructResolverFunction = function (resolver){
+var constructResolverFunctionSingleAPI = function (resolver){
 
     var args = '';
     for(var a in resolver.arguments){
@@ -133,10 +142,60 @@ var constructResolverFunction = function (resolver){
         args += resolver.arguments[a].argumentName;
     }
 
+   var apiReq = '';
+    if(resolver.apiRequests.length > 0)
+        apiReq = constructAPIRequest(resolver.apiRequests[0], '');
+
+    var resolverFunctionContext = {
+        resolverName: resolver.resolverName,
+        arguments: args,
+        apiRequest: apiReq
+    };
+
+    //render context into template
+    var resolverFunction = Mustache.render(resolverSingleReqTemplate, resolverFunctionContext);
+
+    return resolverFunction;
+};
+
+var constructResolverFunctionMultiAPI = function (resolver){
+
+    var args = '';
+    for(var a in resolver.arguments){
+        if(a>0)
+            args += ', ';
+        args += resolver.arguments[a].argumentName;
+    }
+
+    var apiRequestsString = '';
+    var apiRequestVars = '';
+    for(var r in resolver.apiRequests){
+        var apiReqNo = (+r+1);
+        apiRequestsString += constructAPIRequest(resolver.apiRequests[r], apiReqNo) + '\n';
+        if(r != 0)
+            apiRequestVars += ', ';
+        apiRequestVars += 'apiReq' + apiReqNo;
+    }
+
+    var resolverFunctionContext = {
+        resolverName: resolver.resolverName,
+        arguments: args,
+        apiRequests: apiRequestsString,
+        apiRequestVars: apiRequestVars
+    };
+
+    //render context into template
+    var resolverFunction = Mustache.render(resolverMultipleReqTemplate, resolverFunctionContext);
+
+    return resolverFunction;
+};
+
+var constructAPIRequest = function (apiRequest, apiReqNo){
+
     var auth = '';
     var headers = '{';
-    for(var p in resolver.apiRequests[0].parameters){
-        var param = resolver.apiRequests[0].parameters[p];
+    for(var p in apiRequest.parameters){
+        var param = apiRequest.parameters[p];
         if(param.type == 'Authentication'){
             auth = param.parameterName + ':' + param.parameterValue;
         }else{
@@ -148,23 +207,22 @@ var constructResolverFunction = function (resolver){
     headers += '}';
 
     var body;
-    if(resolver.apiRequests[0].body != "")
-        body = resolver.apiRequests[0].body;
+    if(apiRequest.body != "")
+        body = apiRequest.body;
     else
         body = '\'\'';
 
-    var resolverFunctionContext = {
-        resolverName: resolver.resolverName,
-        arguments: args,
-        url: resolver.apiRequests[0].url,
+    var apiRequestContext = {
+        apiReqNo: apiReqNo,
+        url: apiRequest.url,
         body: body,
-        httpMethod: resolver.apiRequests[0].httpMethod,
+        httpMethod: apiRequest.httpMethod,
         authentication: auth,
         headerParameters: headers
     };
 
-    //render contexts into templates
-    var resolverFunction = Mustache.render(resolverSingleReq, resolverFunctionContext);
+    //render context into template
+    var apiReqCode = Mustache.render(apiRequestTemplate, apiRequestContext);
 
-    return resolverFunction;
+    return apiReqCode;
 };

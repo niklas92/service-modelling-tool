@@ -1,17 +1,8 @@
 {{resolverName}}(_, { {{arguments}} }) {
-    var url = new URL.parse('{{{url}}}');
 
-    var bodyData = {{{body}}};
+    {{{apiRequest}}}
 
-    var options = {
-        host: url.host,
-        method: '{{httpMethod}}',
-        path: url.path,
-        auth: '{{authentication}}',
-        headers: {{{headerParameters}}}
-    };
-
-    return makeAPIRequest(options, url.href, JSON.stringify(bodyData))
+    return Promise.resolve(apiReq)
     .then(function(resp){
 
         /*

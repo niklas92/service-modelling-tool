@@ -67,14 +67,12 @@ class App extends React.Component {
                             <div className="divider-new">
                                 <h2 className="h2-responsive">Construct the {this.props.modelName}</h2>
                             </div>
-                            <form onSubmit={this.handleGenerateServer}>
-                                <ServiceConfig setServiceConfig={this.setServiceConfig}/>
-                                <DataModel setDataModel={this.setDataModel}/>
-                                <ResolversModel setResolversModel={this.setResolversModel}/>
-                                <div>
-                                    <button type="submit" value="Submit" className="btn btn-default float-right">Generate Server</button>
-                                </div>
-                            </form>
+                            <ServiceConfig setServiceConfig={this.setServiceConfig}/>
+                            <DataModel setDataModel={this.setDataModel}/>
+                            <ResolversModel setResolversModel={this.setResolversModel}/>
+                            <div>
+                                <button onClick={this.handleGenerateServer} type="button" className="btn btn-default float-right">Generate Server</button>
+                            </div>
                         </div>
                     </div>
                 </div>
