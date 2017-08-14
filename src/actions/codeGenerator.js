@@ -1,39 +1,31 @@
 import Mustache from 'mustache';
 import JSZip from 'jszip';
 import FileSaver from 'file-saver';
-
+import serverTemplate from './mustache-templates/server.mustache';
+import packageTemplate from './mustache-templates/package.mustache';
+import schemaTemplate from './mustache-templates/schema.mustache';
+import resolversTemplate from './mustache-templates/resolvers.mustache';
 
 exports.renderServerFile = function (gqlModel) {
 
-    //Get mustache templates with jquery as promises
-    var severTemplatePromise = $.get('/mustache-templates/server.mustache');
-    var packageTemplatePromise = $.get('/mustache-templates/package.mustache');
-    var schemaTemplatePromise = $.get('/mustache-templates/schema.mustache');
-    var resolversTemplatePromise = $.get('/mustache-templates/resolvers.mustache');
+    //render contexts into templates
+    var serverOutput = Mustache.render(serverTemplate, gqlModel.serverModel);
+    var packageOutput = Mustache.render(packageTemplate, gqlModel.packageModel);
+    var schemaOutput = Mustache.render(schemaTemplate, gqlModel.schemaModel);
+    var resolversOutput = Mustache.render(resolversTemplate, gqlModel.resolversModel);
 
-    //Resolve both promises, then render mustache templates and export them
-    Promise.all([severTemplatePromise, packageTemplatePromise, schemaTemplatePromise, resolversTemplatePromise])
-    .then(function(templates){
+    //create server as a zip folder
+    var serverZip = new JSZip();
+    serverZip.file('server.js', serverOutput);
+    serverZip.file('package.json', packageOutput);
 
-        //render contexts into templates
-        var serverOutput = Mustache.render(templates[0], gqlModel.serverModel);
-        var packageOutput = Mustache.render(templates[1], gqlModel.packageModel);
-        var schemaOutput = Mustache.render(templates[2], gqlModel.schemaModel);
-        var resolversOutput = Mustache.render(templates[3], gqlModel.resolversModel);
+    var dataFolder = serverZip.folder('data');
+    dataFolder.file('schema.js', schemaOutput);
+    dataFolder.file('resolvers.js', resolversOutput);
 
-        //create server as a zip folder
-        var serverZip = new JSZip();
-        serverZip.file('server.js', serverOutput);
-        serverZip.file('package.json', packageOutput);
-
-        var dataFolder = serverZip.folder('data');
-        dataFolder.file('schema.js', schemaOutput);
-        dataFolder.file('resolvers.js', resolversOutput);
-
-        serverZip.generateAsync({type:'blob'})
-            .then(function(content) {
-                FileSaver.saveAs(content, 'query-service.zip');
-                console.log('Server folder created and exported!');
-            });
+    serverZip.generateAsync({type:'blob'})
+    .then(function(content) {
+        FileSaver.saveAs(content, 'query-service.zip');
+        console.log('Server folder created and exported!');
     });
 };

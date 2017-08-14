@@ -1,0 +1,24 @@
+{{resolverName}}(_, { {{arguments}} }) {
+    var url = new URL.parse('{{{url}}}');
+
+    var bodyData = {{{body}}};
+
+    var options = {
+        host: url.host,
+        method: '{{httpMethod}}',
+        path: url.path,
+        auth: '{{authentication}}',
+        headers: {{{headerParameters}}}
+    };
+
+    return makeAPIRequest(options, url.href, JSON.stringify(bodyData))
+    .then(function(resp){
+
+        /*
+        * TODO: INSERT MANUAL CODE REFINEMENT HERE
+        * transform the data from the api request
+        * and return it
+        */
+
+    }).catch((err) => console.error(err));
+}

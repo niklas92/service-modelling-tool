@@ -57,6 +57,10 @@ module.exports = {
                     fallback: "style-loader",
                     use: "css-loader"
                 })
+            },
+            {
+                test: /\.mustache$/,
+                use: 'raw-loader'
             }
         ]
     },
@@ -66,8 +70,7 @@ module.exports = {
         new HtmlWebpackPlugin({template: './src/index.html'}),
         new ExtractTextPlugin("styles/app.css"),
         new CopyWebpackPlugin([
-            { from: './src/styles' , to: 'styles'},
-            { from: './src/actions/mustache-templates' , to: 'mustache-templates'}
+            { from: './src/styles' , to: 'styles'}
         ]),
     ]
 

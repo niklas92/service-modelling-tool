@@ -1,3 +1,5 @@
+import Mustache from 'mustache';
+import resolverSingleReq from './mustache-templates/resolverSingleReq.mustache';
 
 exports.transformToGraphQLModel = function (serviceModel) {
 
@@ -94,50 +96,80 @@ var constructSchemaResolver =  function (resolverModel){
 
 var transformToResolversModel = function (serviceModel){
 
+    var resolvers = serviceModel.resolvers;
+
+    var queriesString = '';
+    var mutationsString = '';
+
+    //create functions for every resolver
+    // and store them either in the queries- or mutations string
+    for(var r in resolvers){
+        var resolver = resolvers[r];
+
+        var resolverFunction = makeResolverFunction(resolver);
+
+        if(resolver.apiRequests[0].httpMethod == "GET"){
+            queriesString += '\n        ' + resolverFunction + ',';
+        }else{
+            mutationsString += '\n      ' + resolverFunction + ',';
+        }
+
+    }
+
+
     var resolversModel = {
-        resolvers: `{
-            Query: {
-                posts() {
-                    return posts;
-                },
-                author(_, { id }) {
-                    return find(authors, { id: id });
-                },
-                authors() {
-                    return authors;
-                },
-            },
-            Mutation: {
-                upvotePost(_, { postId }) {
-                    const post = find(posts, { id: postId });
-                    if (!post) {
-                        throw new Error("Couldn't find post");
-                    }
-                    post.votes += 1;
-                    return post;
-                },
-                createPost(_, {authorId, title}) {
-                    // Create an id for our "database".
-                    var id = posts[posts.length - 1].id + 1;
-                    var newPost = { id, authorId, title, votes: 0 };
-                    posts.push(newPost);
-                
-                    return newPost;
-                },
-                deletePost(_, {postId}) {
-                    var post = find(posts, {id: postId});
-                    var index = posts.indexOf(post);
-                    if (index > -1) {
-                        posts.splice(index, 1);
-                    } else {
-                        throw new Error("Couldn't find post");
-                    }
-                
-                    return post;
-                }
-            }
-        };`
+        queries: queriesString,
+        mutations: mutationsString
     };
 
+    console.log('resolversModel: ' + JSON.stringify(resolversModel));
+
     return resolversModel;
+};
+
+var makeResolverFunction = function (resolver){
+
+    var args = '';
+    for(var a in resolver.arguments){
+        if(a>0)
+            args += ', ';
+        args += resolver.arguments[a].argumentName;
+    }
+
+    var auth = '';
+    var headers = {};
+    for(var p in resolver.apiRequests[0].parameters){
+        var param = resolver.apiRequests[0].parameters[p];
+        if(param.type == 'Authentication'){
+            auth = param.parameterName + ':' + param.parameterValue;
+        }else{
+            headers[param.parameterName] = param.parameterValue;
+        }
+    }
+
+    var body;
+    if(resolver.apiRequests[0].body != "")
+        body = resolver.apiRequests[0].body;
+    else
+        body = '\'\'';
+
+    var resolverFunctionContext = {
+        resolverName: resolver.resolverName,
+        arguments: args,
+        url: resolver.apiRequests[0].url,
+        body: body,
+        httpMethod: resolver.apiRequests[0].httpMethod,
+        authentication: auth,
+        headerParameters: JSON.stringify(headers)
+
+    };
+
+    console.log('resolverFunctionContext: ' + JSON.stringify(resolverFunctionContext));
+
+    //render contexts into templates
+    var resolverFunction = Mustache.render(resolverSingleReq, resolverFunctionContext);
+
+    console.log('resolverFunction: \n' + resolverFunction);
+
+    return resolverFunction;
 };
