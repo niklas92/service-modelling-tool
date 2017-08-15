@@ -5,11 +5,17 @@
     return Promise.resolve(apiReq)
     .then(function(resp){
 
+        //transform response to JSON object
+        var responseJSON = JSON.parse(resp);
+
         /*
         * TODO: INSERT MANUAL CODE REFINEMENT HERE
         * transform the data from the api request
         * and return it
         */
+
+        console.log(responseJSON);
+        return responseJSON;
 
     }).catch((err) => console.error(err));
 },

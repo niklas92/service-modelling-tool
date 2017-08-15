@@ -197,11 +197,11 @@ var constructAPIRequest = function (apiRequest, apiReqNo){
     for(var p in apiRequest.parameters){
         var param = apiRequest.parameters[p];
         if(param.type == 'Authentication'){
-            auth = param.parameterName + ':' + param.parameterValue;
+            auth = param.parameterName + '+\':\'+' + param.parameterValue;
         }else{
             if(headers.length != 1)
                 headers += ', ';
-            headers += '\"' + param.parameterName + '\": ' + param.parameterValue;
+            headers += param.parameterName + ': ' + param.parameterValue;
         }
     }
     headers += '}';

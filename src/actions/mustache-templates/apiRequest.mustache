@@ -5,7 +5,7 @@ var options{{apiReqNo}} = {
     host: url{{apiReqNo}}.host,
     method: '{{httpMethod}}',
     path: url{{apiReqNo}}.path,
-    auth: '{{authentication}}',
+    auth: {{authentication}},
     headers: {{{headerParameters}}}
 };
 var apiReq{{apiReqNo}} = makeAPIRequest(options{{apiReqNo}}, url{{apiReqNo}}.href, JSON.stringify(bodyData{{apiReqNo}}));
