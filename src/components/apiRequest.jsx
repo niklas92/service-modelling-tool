@@ -154,6 +154,9 @@ class APIRequest extends React.Component {
                     onChange={this.handleHTTPMethodChange}
                     className="md-form"
                     floatingLabelStyle={{color: '#757575'}}
+                    selectedMenuItemStyle={{color: '#4285F4'}}
+                    underlineStyle={{borderColor: '#CBCBCB'}}
+                    underlineFocusStyle={{borderColor: '#4285F4'}}
                     style={{width: '100%'}}>
                     <MenuItem value="GET" primaryText="GET" />
                     <MenuItem value="POST" primaryText="POST" />
@@ -226,7 +229,10 @@ class APIRequest extends React.Component {
                             <SelectField
                                 value={this.state.parameterType}
                                 onChange={this.handleParameterTypeChange}
-                                style={{verticalAlign: 'bottom'}}>
+                                selectedMenuItemStyle={{color: '#4285F4'}}
+                                underlineStyle={{borderColor: '#CBCBCB'}}
+                                underlineFocusStyle={{borderColor: '#4285F4'}}
+                                style={{verticalAlign: 'bottom', marginTop: '5px'}}>
                                 <MenuItem value="Header" primaryText="Header"/>
                                 <MenuItem value="Query" primaryText="Query"/>
                             </SelectField>

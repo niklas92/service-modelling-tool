@@ -60,4 +60,5 @@ footer {
 .reqDescription {
     position: absolute;
     bottom: 0;
+    margin-bottom: 6px;
 }

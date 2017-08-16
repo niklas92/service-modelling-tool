@@ -145,10 +145,10 @@ class DataEntity extends React.Component {
                     </table>
 
                     <div className="row">
-                        <div className="col-md-6">
+                        <div className="col-6">
                             <div className="descriptionText reqDescription">* required field</div>
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-6">
                             <button onClick={this.saveDataEntity} type="button" disabled={this.state.modelChangesSubmitted} className="btn btn-default float-right">OK</button>
                         </div>
                     </div>

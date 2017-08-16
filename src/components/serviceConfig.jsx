@@ -72,10 +72,10 @@ class ServiceConfig extends React.Component {
                         </div>
 
                         <div className="row">
-                            <div className="col-md-6">
+                            <div className="col-6">
                                 <div className="descriptionText reqDescription">* required field</div>
                             </div>
-                            <div className="col-md-6">
+                            <div className="col-6">
                                 <button onClick={this.saveServiceConfig} type="button" disabled={this.state.modelChangesSubmitted} className="btn btn-default float-right">OK</button>
                             </div>
                         </div>
