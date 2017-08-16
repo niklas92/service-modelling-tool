@@ -11,6 +11,10 @@ class APIRequest extends React.Component {
             url: '',
             httpMethod: 'GET',
             body: '',
+            authentication: {
+                username: '',
+                password: ''
+            },
             parameters: [],
             parameterName: '',
             parameterValue: '',
@@ -20,6 +24,8 @@ class APIRequest extends React.Component {
         this.handleURLChange = this.handleURLChange.bind(this);
         this.handleHTTPMethodChange = this.handleHTTPMethodChange.bind(this);
         this.handleBodyChange = this.handleBodyChange.bind(this);
+        this.handleAuthUsernameChange = this.handleAuthUsernameChange.bind(this);
+        this.handleAuthPasswordChange = this.handleAuthPasswordChange.bind(this);
         this.handleParameterNameChange = this.handleParameterNameChange.bind(this);
         this.handleParameterValueChange = this.handleParameterValueChange.bind(this);
         this.handleParameterTypeChange = this.handleParameterTypeChange.bind(this);
@@ -43,6 +49,22 @@ class APIRequest extends React.Component {
 
     handleBodyChange(event) {
         this.setState({body: event.target.value}, function(){
+            this.saveAPIRequest();
+        });
+    }
+
+    handleAuthUsernameChange(event) {
+        let auth = Object.assign({}, this.state.authentication);
+        auth.username = event.target.value;
+        this.setState({authentication: auth}, function(){
+            this.saveAPIRequest();
+        });
+    }
+
+    handleAuthPasswordChange(event) {
+        let auth = Object.assign({}, this.state.authentication);
+        auth.password = event.target.value;
+        this.setState({authentication: auth}, function(){
             this.saveAPIRequest();
         });
     }
@@ -100,6 +122,7 @@ class APIRequest extends React.Component {
             url: this.state.url,
             httpMethod: this.state.httpMethod,
             body: this.state.body,
+            authentication: this.state.authentication,
             parameters: this.state.parameters
         };
         this.props.saveRequest(apiRequest);
@@ -116,7 +139,7 @@ class APIRequest extends React.Component {
                 <button onClick={this.deleteAPIRequest} type="button" className="close" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <p className="card-title">API Request {this.props.requestId+1}</p>
+                <p><strong>API Request {this.props.requestId+1}</strong></p>
                 <br/>
 
                 <div value={this.state.url} onChange={this.handleURLChange} className="md-form">
@@ -141,6 +164,24 @@ class APIRequest extends React.Component {
                     <input type="text" className="form-control"/>
                     <label>Request body parameter name</label>
                 </div>
+
+                <p>Authentication</p>
+                <div className="row">
+                    <div className="col-md-6">
+                        <div value={this.state.authentication.username} onChange={this.handleAuthUsernameChange} className="md-form">
+                            <input type="text" className="form-control"/>
+                            <label>Username</label>
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <div value={this.state.authentication.password} onChange={this.handleAuthPasswordChange} className="md-form">
+                            <input type="text" className="form-control"/>
+                            <label>Password</label>
+                        </div>
+                    </div>
+                </div>
+
+                <p>Parameters</p>
 
                 <table className="table table-sm">
 
