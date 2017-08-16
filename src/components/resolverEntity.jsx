@@ -122,8 +122,6 @@ class ResolverEntity extends React.Component {
         var requestsArray = this.state.apiRequests;
         var index = findIndex(requestsArray, {requestId: apiReq.requestId});
 
-        console.log(JSON.stringify(apiReq));
-
         if(index >= 0) {
             //replace old apiRequest with new one
             requestsArray.splice(index, 1, apiReq);

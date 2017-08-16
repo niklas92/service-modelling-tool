@@ -189,7 +189,7 @@ class APIRequest extends React.Component {
                     <tr className="text-white">
                         <th>Parameter name</th>
                         <th>Parameter value</th>
-                        <th>Type</th>
+                        <th>In</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -220,8 +220,8 @@ class APIRequest extends React.Component {
                                 value={this.state.parameterType}
                                 onChange={this.handleParameterTypeChange}
                                 style={{verticalAlign: 'bottom'}}>
-                                <MenuItem value="Header" primaryText="Header" />
-                                <MenuItem value="Authentication" primaryText="Authentication"/>
+                                <MenuItem value="Header" primaryText="Header"/>
+                                <MenuItem value="Query" primaryText="Query"/>
                             </SelectField>
                         </td>
                         <td>

@@ -192,33 +192,53 @@ var constructResolverFunctionMultiAPI = function (resolver){
 
 var constructAPIRequest = function (apiRequest, apiReqNo){
 
-    var auth = '';
-    var headers = '{';
-    for(var p in apiRequest.parameters){
-        var param = apiRequest.parameters[p];
-        if(param.type == 'Authentication'){
-            auth = param.parameterName + '+\':\'+' + param.parameterValue;
-        }else{
-            if(headers.length != 1)
-                headers += ', ';
-            headers += param.parameterName + ': ' + param.parameterValue;
-        }
-    }
-    headers += '}';
-
+    //construct body
     var body;
     if(apiRequest.body != "")
         body = apiRequest.body;
     else
         body = '\'\'';
 
+    //construct authentication
+    var auth = '';
+    if(apiRequest.authentication.username != '' && apiRequest.authentication.password != '')
+        auth = apiRequest.authentication.username + '+\':\'+' + apiRequest.authentication.password;
+
+    //construct header and query parameters
+    var queryParam = '';
+    var headers = '{';
+    for(var p in apiRequest.parameters){
+        var param = apiRequest.parameters[p];
+        if(param.type == 'Query'){
+            if(queryParam == '')
+                queryParam += '+\'?';
+            else
+                queryParam += '+\'&';
+            queryParam +=  param.parameterName + '=\'+' + param.parameterValue;
+        }else{
+            if(headers.length != 1)
+                headers += ', ';
+            headers += '\"' + param.parameterName + '\"' + ': ' + param.parameterValue;
+        }
+    }
+    headers += '}';
+
+    //construct URL
+    var urlString = apiRequest.url;
+    var test = '' + apiRequest.url;
+    console.log(urlString);
+    console.log(test);
+    urlString = urlString.replace("{", "\'+");
+    urlString = urlString.replace("}", "+\'");
+
     var apiRequestContext = {
         apiReqNo: apiReqNo,
-        url: apiRequest.url,
+        url: urlString,
         body: body,
         httpMethod: apiRequest.httpMethod,
         authentication: auth,
-        headerParameters: headers
+        headerParameters: headers,
+        queryParameters: queryParam
     };
 
     //render context into template
