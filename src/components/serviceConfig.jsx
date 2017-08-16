@@ -62,8 +62,9 @@ class ServiceConfig extends React.Component {
                         </div>
 
                         <div className="md-form">
-                            <input value={this.state.port} onChange={this.handlePortChange} type="number" className="form-control"/>
                             <label>Port *</label>
+                            <input value={this.state.port} onChange={this.handlePortChange} type="number" className="form-control has-hint"/>
+                            <div className="hint">The localhost port where the generated server will run.</div>
                         </div>
 
                         <div className="md-form">

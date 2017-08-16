@@ -149,7 +149,7 @@ class APIRequest extends React.Component {
                 </div>
 
                 <SelectField
-                    floatingLabelText="HTTP Method"
+                    floatingLabelText="HTTP method"
                     value={this.state.httpMethod}
                     onChange={this.handleHTTPMethodChange}
                     className="md-form"
@@ -170,28 +170,24 @@ class APIRequest extends React.Component {
                 </div>
 
                 <p>Authentication</p>
-                <p className="descriptionText">Hint: Use quotes (' ' or " ") to specify string values.
-                    Input without quotes will be treated as variable names
-                    (e.g. to pass authentication parameters via arguments to the function).</p>
                 <div className="row">
                     <div className="col-md-6">
                         <div value={this.state.authentication.username} onChange={this.handleAuthUsernameChange} className="md-form">
-                            <input type="text" className="form-control"/>
                             <label>Username</label>
+                            <input type="text" className="form-control has-hint"/>
+                            <div className="hint">Use ' ' for string values. Considered as parameter name otherwise.</div>
                         </div>
                     </div>
                     <div className="col-md-6">
                         <div value={this.state.authentication.password} onChange={this.handleAuthPasswordChange} className="md-form">
-                            <input type="text" className="form-control"/>
                             <label>Password</label>
+                            <input type="text" className="form-control has-hint"/>
+                            <div className="hint">Use ' ' for string values. Considered as parameter name otherwise.</div>
                         </div>
                     </div>
                 </div>
 
                 <p>Parameters (query and header)</p>
-                <p className="descriptionText">Hint: For the parameter value use quotes (' ' or " ") to specify string values.
-                    Parameter values without quotes will be treated as variable names
-                    (e.g. to use argument parameters as query parameter values).</p>
 
                 <table className="table table-sm">
 
@@ -223,7 +219,8 @@ class APIRequest extends React.Component {
                             <input value={this.state.parameterName} onChange={this.handleParameterNameChange} type="text" className="form-control"/>
                         </td>
                         <td>
-                            <input value={this.state.parameterValue} onChange={this.handleParameterValueChange} type="text" className="form-control"/>
+                            <input value={this.state.parameterValue} onChange={this.handleParameterValueChange} type="text" className="form-control has-hint"/>
+                            <div className="hint">Use ' ' for string values.</div>
                         </td>
                         <td>
                             <SelectField

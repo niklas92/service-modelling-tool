@@ -158,13 +158,15 @@ class ResolverEntity extends React.Component {
                     <br/>
 
                     <div className="md-form">
-                        <input value={this.state.resolverName} onChange={this.handleResolverNameChange} type="text" className="form-control"/>
                         <label>Resolver name *</label>
+                        <input value={this.state.resolverName} onChange={this.handleResolverNameChange} type="text" className="form-control has-hint"/>
+                        <div className="hint">Resolver name is how the resolver function will be called!</div>
                     </div>
 
                     <div className="md-form">
-                        <input value={this.state.returnType} onChange={this.handleReturnTypeChange} type="text" className="form-control"/>
                         <label>Return type *</label>
+                        <input value={this.state.returnType} onChange={this.handleReturnTypeChange} type="text" className="form-control has-hint"/>
+                        <div className="hint">String, Int, Float, Boolean, ID or one of your entities.</div>
                     </div>
 
                     <p><strong>Arguments</strong></p>
@@ -197,7 +199,8 @@ class ResolverEntity extends React.Component {
                                 <input value={this.state.argumentName} onChange={this.handleArgumentNameChange} type="text" className="form-control"/>
                             </td>
                             <td>
-                                <input value={this.state.argumentType} onChange={this.handleArgumentTypeChange} type="text" className="form-control"/>
+                                <input value={this.state.argumentType} onChange={this.handleArgumentTypeChange} type="text" className="form-control has-hint"/>
+                                <div className="hint">String, Int, Float, Boolean, ID or one of your entities.</div>
                             </td>
                             <td>
                                 <button onClick={this.addArgument} type="button" className="btn btn-sm">Add</button>
@@ -225,7 +228,7 @@ class ResolverEntity extends React.Component {
 
                     <div className="row">
                         <div className="col-6">
-                            <div className="descriptionText reqDescription">* required field</div>
+                            <div className="reqDescription">* required field</div>
                         </div>
                         <div className="col-6">
                             <button onClick={this.saveResolver} type="button" disabled={this.state.modelChangesSubmitted} className="btn btn-default float-right">OK</button>
