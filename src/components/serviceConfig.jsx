@@ -4,7 +4,7 @@ import React from 'react';
 class ServiceConfig extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {appName: '', description: '', author:'', port: '', modelChangesSubmitted: true};
+        this.state = {appName: '', description: '', author:'', port: '8080', modelChangesSubmitted: true};
 
         this.handleAppNameChange = this.handleAppNameChange.bind(this);
         this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
@@ -34,8 +34,12 @@ class ServiceConfig extends React.Component {
     }
 
     saveServiceConfig() {
-        this.setState({modelChangesSubmitted: true});
-        this.props.setServiceConfig(this.state);
+        if(this.state.appName == '' || this.state.port == ''){
+            alert('Please fill out all required fields');
+        }else{
+            this.setState({modelChangesSubmitted: true});
+            this.props.setServiceConfig(this.state);
+        }
     }
 
     render() {
@@ -46,11 +50,10 @@ class ServiceConfig extends React.Component {
                     <div className="card-block">
 
                         <h4 className="card-title">Define Server</h4>
-                        <p>Define the specification of the GraphQL server (make sure to specify schema and resolvers before)</p>
 
                         <div className="md-form">
                             <input value={this.state.appName} onChange={this.handleAppNameChange} type="text" className="form-control"/>
-                            <label>Application name</label>
+                            <label>Application name *</label>
                         </div>
 
                         <div className="md-form">
@@ -60,7 +63,7 @@ class ServiceConfig extends React.Component {
 
                         <div className="md-form">
                             <input value={this.state.port} onChange={this.handlePortChange} type="number" className="form-control"/>
-                            <label>Port</label>
+                            <label>Port *</label>
                         </div>
 
                         <div className="md-form">
@@ -68,8 +71,13 @@ class ServiceConfig extends React.Component {
                             <label>Application description</label>
                         </div>
 
-                        <div>
-                            <button onClick={this.saveServiceConfig} type="button" disabled={this.state.modelChangesSubmitted} className="btn btn-default float-right">OK</button>
+                        <div className="row">
+                            <div className="col-md-6">
+                                <div className="descriptionText reqDescription">* required field</div>
+                            </div>
+                            <div className="col-md-6">
+                                <button onClick={this.saveServiceConfig} type="button" disabled={this.state.modelChangesSubmitted} className="btn btn-default float-right">OK</button>
+                            </div>
                         </div>
 
                     </div>

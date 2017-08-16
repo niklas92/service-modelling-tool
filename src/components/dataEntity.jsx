@@ -68,13 +68,17 @@ class DataEntity extends React.Component {
     }
 
     saveDataEntity() {
-        this.setState({modelChangesSubmitted: true});
-        var entity = {
-            entityId: this.props.entityId,
-            entityName: this.state.entityName,
-            parameters: this.state.parameters
-        };
-        this.props.saveEntity(entity);
+        if(this.state.entityName == ''){
+            alert('Please fill out all required fields');
+        }else {
+            this.setState({modelChangesSubmitted: true});
+            var entity = {
+                entityId: this.props.entityId,
+                entityName: this.state.entityName,
+                parameters: this.state.parameters
+            };
+            this.props.saveEntity(entity);
+        }
     }
 
     deleteDataEntity() {
@@ -95,7 +99,7 @@ class DataEntity extends React.Component {
 
                     <div className="md-form">
                         <input value={this.state.entityName} onChange={this.handleEntityNameChange} type="text" className="form-control"/>
-                        <label>Entity name</label>
+                        <label>Entity name *</label>
                     </div>
 
                     <br/>
@@ -140,8 +144,13 @@ class DataEntity extends React.Component {
                         </tbody>
                     </table>
 
-                    <div>
-                        <button onClick={this.saveDataEntity} type="button" disabled={this.state.modelChangesSubmitted} className="btn btn-default float-right">OK</button>
+                    <div className="row">
+                        <div className="col-md-6">
+                            <div className="descriptionText reqDescription">* required field</div>
+                        </div>
+                        <div className="col-md-6">
+                            <button onClick={this.saveDataEntity} type="button" disabled={this.state.modelChangesSubmitted} className="btn btn-default float-right">OK</button>
+                        </div>
                     </div>
 
                 </div>

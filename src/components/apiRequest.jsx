@@ -142,9 +142,10 @@ class APIRequest extends React.Component {
                 <p><strong>API Request {this.props.requestId+1}</strong></p>
                 <br/>
 
+                <p className="descriptionText">Hint: Indicate variable URI parameters with {'{}'} (e.g. person/{'{'}personId{'}'}).</p>
                 <div value={this.state.url} onChange={this.handleURLChange} className="md-form">
                     <input type="text" className="form-control"/>
-                    <label>URL</label>
+                    <label>URL *</label>
                 </div>
 
                 <SelectField
@@ -166,6 +167,9 @@ class APIRequest extends React.Component {
                 </div>
 
                 <p>Authentication</p>
+                <p className="descriptionText">Hint: Use quotes (' ' or " ") to specify string values.
+                    Input without quotes will be treated as variable names
+                    (e.g. to pass authentication parameters via arguments to the function).</p>
                 <div className="row">
                     <div className="col-md-6">
                         <div value={this.state.authentication.username} onChange={this.handleAuthUsernameChange} className="md-form">
@@ -181,7 +185,10 @@ class APIRequest extends React.Component {
                     </div>
                 </div>
 
-                <p>Parameters</p>
+                <p>Parameters (query and header)</p>
+                <p className="descriptionText">Hint: For the parameter value use quotes (' ' or " ") to specify string values.
+                    Parameter values without quotes will be treated as variable names
+                    (e.g. to use argument parameters as query parameter values).</p>
 
                 <table className="table table-sm">
 

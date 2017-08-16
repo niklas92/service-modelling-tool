@@ -81,15 +81,19 @@ class ResolverEntity extends React.Component {
     }
 
     saveResolver() {
-        this.setState({modelChangesSubmitted: true});
-        var resolver = {
-            resolverId: this.props.resolverId,
-            resolverName: this.state.resolverName,
-            returnType: this.state.returnType,
-            arguments: this.state.arguments,
-            apiRequests: this.state.apiRequests
-        };
-        this.props.saveResolver(resolver);
+        if(this.state.resolverName == '' || this.state.returnType == ''){
+            alert('Please fill out all required fields');
+        }else {
+            this.setState({modelChangesSubmitted: true});
+            var resolver = {
+                resolverId: this.props.resolverId,
+                resolverName: this.state.resolverName,
+                returnType: this.state.returnType,
+                arguments: this.state.arguments,
+                apiRequests: this.state.apiRequests
+            };
+            this.props.saveResolver(resolver);
+        }
     }
 
     deleteResolver() {
@@ -155,12 +159,12 @@ class ResolverEntity extends React.Component {
 
                     <div className="md-form">
                         <input value={this.state.resolverName} onChange={this.handleResolverNameChange} type="text" className="form-control"/>
-                        <label>Resolver name</label>
+                        <label>Resolver name *</label>
                     </div>
 
                     <div className="md-form">
                         <input value={this.state.returnType} onChange={this.handleReturnTypeChange} type="text" className="form-control"/>
-                        <label>Return type</label>
+                        <label>Return type *</label>
                     </div>
 
                     <p><strong>Arguments</strong></p>
@@ -219,8 +223,13 @@ class ResolverEntity extends React.Component {
                     </div>
 
 
-                    <div>
-                        <button onClick={this.saveResolver} type="button" disabled={this.state.modelChangesSubmitted} className="btn btn-default float-right">OK</button>
+                    <div className="row">
+                        <div className="col-md-6">
+                            <div className="descriptionText reqDescription">* required field</div>
+                        </div>
+                        <div className="col-md-6">
+                            <button onClick={this.saveResolver} type="button" disabled={this.state.modelChangesSubmitted} className="btn btn-default float-right">OK</button>
+                        </div>
                     </div>
 
                 </div>
