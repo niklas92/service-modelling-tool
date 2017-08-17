@@ -225,9 +225,6 @@ var constructAPIRequest = function (apiRequest, apiReqNo){
 
     //construct URL
     var urlString = apiRequest.url;
-    var test = '' + apiRequest.url;
-    console.log(urlString);
-    console.log(test);
     urlString = urlString.replace("{", "\'+");
     urlString = urlString.replace("}", "+\'");
 

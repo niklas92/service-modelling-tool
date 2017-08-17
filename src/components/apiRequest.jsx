@@ -42,7 +42,6 @@ class APIRequest extends React.Component {
 
     handleHTTPMethodChange(event, index, value) {
         this.setState({httpMethod: value}, function(){
-            console.log(JSON.stringify(this.state));
             this.saveAPIRequest();
         });
     }

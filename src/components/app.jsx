@@ -38,18 +38,14 @@ class App extends React.Component {
 
     setDataModel(dataModel){
         this.serviceModel.dataModel = dataModel;
-        console.log("serviceModel.dataModel: " + JSON.stringify(this.serviceModel.dataModel));
     }
 
     setResolversModel(resolversModel){
         this.serviceModel.resolvers = resolversModel;
-        console.log("serviceModel.resolvers: " + JSON.stringify(this.serviceModel.resolvers));
     }
 
     //when user entered all fields and clicks on 'generate server' button
     handleGenerateServer(event) {
-        console.log("serviceModel: " + JSON.stringify(this.serviceModel));
-
         //transform service model (PIM) to GraphQL model (PSM)
         var gqlModel = ModelTransformer.transformToGraphQLModel(this.serviceModel);
 
