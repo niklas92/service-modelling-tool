@@ -140,12 +140,11 @@ class APIRequest extends React.Component {
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <p><strong>API Request {this.props.requestId+1}</strong></p>
-                <br/>
 
-                <p className="descriptionText">Hint: Indicate variable URI parameters with {'{}'} (e.g. person/{'{'}personId{'}'}).</p>
                 <div value={this.state.url} onChange={this.handleURLChange} className="md-form">
-                    <input type="text" className="form-control"/>
                     <label>URL *</label>
+                    <input type="text" className="form-control has-hint"/>
+                    <div className="hint">Indicate variable URI parameters with {'{}'} (e.g. person/{'{'}personId{'}'}).</div>
                 </div>
 
                 <SelectField

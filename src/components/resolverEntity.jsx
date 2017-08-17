@@ -81,7 +81,7 @@ class ResolverEntity extends React.Component {
     }
 
     saveResolver() {
-        if(this.state.resolverName == '' || this.state.returnType == ''){
+        if(!this.requiredFieldsFilledOut()){
             alert('Please fill out all required fields');
         }else {
             this.setState({modelChangesSubmitted: true});
@@ -94,6 +94,22 @@ class ResolverEntity extends React.Component {
             };
             this.props.saveResolver(resolver);
         }
+    }
+
+    //check if required fields are filled out.
+    requiredFieldsFilledOut(){
+        var reqFieldsDone = true;
+        for(var a in this.state.apiRequests){
+            if(this.state.apiRequests[a].url == ''){
+                reqFieldsDone = false;
+            }
+        }
+
+        if(this.state.resolverName == '' || this.state.returnType == ''){
+            reqFieldsDone = false
+        }
+
+        return reqFieldsDone;
     }
 
     deleteResolver() {
@@ -160,7 +176,7 @@ class ResolverEntity extends React.Component {
                     <div className="md-form">
                         <label>Resolver name *</label>
                         <input value={this.state.resolverName} onChange={this.handleResolverNameChange} type="text" className="form-control has-hint"/>
-                        <div className="hint">Resolver name is how the resolver function will be called!</div>
+                        <div className="hint">Resolver name is how the resolver function will be called (e.g. getPerson)!</div>
                     </div>
 
                     <div className="md-form">
