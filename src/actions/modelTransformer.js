@@ -58,14 +58,11 @@ var transformToSchemaModel = function (serviceModel){
     var resolvers = serviceModel.resolvers;
     for(var r in resolvers){
         var resolver = resolvers[r];
-        if(resolver.apiRequests.length > 0) {
-            if (resolver.apiRequests.length > 0 && resolver.apiRequests[0].httpMethod != "GET") {
-                mutationString += '\n    ' + constructSchemaResolver(resolver);
-            } else {
-                queryString += '\n    ' + constructSchemaResolver(resolver);
-            }
+        if (resolver.apiRequests.length > 0 && resolver.apiRequests[0].httpMethod != "GET") {
+            mutationString += '\n    ' + constructSchemaResolver(resolver);
+        } else {
+            queryString += '\n    ' + constructSchemaResolver(resolver);
         }
-
     }
 
     var schemaModel = {
@@ -89,6 +86,10 @@ var constructSchemaResolver =  function (resolverModel){
                 schemaResolver += ', ';
             var arg = resolverModel.arguments[a];
             schemaResolver += arg.argumentName + ': ' + arg.argumentType;
+            //if arg is required add ! after the type
+            if(arg.required){
+                schemaResolver += '!'
+            }
         }
 
         schemaResolver += ')';
@@ -214,7 +215,7 @@ var constructAPIRequest = function (apiRequest, apiReqNo){
                 queryParam += '+\'?';
             else
                 queryParam += '+\'&';
-            queryParam +=  param.parameterName + '=\'+' + param.parameterValue;
+            queryParam +=  param.parameterName + '=\'+' + param.parameterValue.replace(/ /g,"+");
         }else{
             if(headers.length != 1)
                 headers += ', ';
@@ -225,8 +226,8 @@ var constructAPIRequest = function (apiRequest, apiReqNo){
 
     //construct URL
     var urlString = apiRequest.url;
-    urlString = urlString.replace("{", "\'+");
-    urlString = urlString.replace("}", "+\'");
+    urlString = urlString.replace(/{/g, "\'+");
+    urlString = urlString.replace(/}/g, "+\'");
 
     var apiRequestContext = {
         apiReqNo: apiReqNo,

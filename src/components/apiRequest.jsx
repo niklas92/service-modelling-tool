@@ -18,7 +18,7 @@ class APIRequest extends React.Component {
             parameters: [],
             parameterName: '',
             parameterValue: '',
-            parameterType: ''
+            parameterType: 'Header'
         };
 
         this.handleURLChange = this.handleURLChange.bind(this);

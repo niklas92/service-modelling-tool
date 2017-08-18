@@ -1,5 +1,7 @@
 import React from 'react';
 import {find, findIndex} from 'lodash';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 import APIRequest from './apiRequest.jsx';
 
 class ResolverEntity extends React.Component {
@@ -12,6 +14,7 @@ class ResolverEntity extends React.Component {
             apiRequests: [],
             argumentName: '',
             argumentType: '',
+            argumentRequired: false,
             modelChangesSubmitted: true
         };
 
@@ -19,6 +22,7 @@ class ResolverEntity extends React.Component {
         this.handleReturnTypeChange = this.handleReturnTypeChange.bind(this);
         this.handleArgumentNameChange = this.handleArgumentNameChange.bind(this);
         this.handleArgumentTypeChange = this.handleArgumentTypeChange.bind(this);
+        this.handleArgumentRequiredChange = this.handleArgumentRequiredChange.bind(this);
         this.addArgument = this.addArgument.bind(this);
         this.deleteArgument = this.deleteArgument.bind(this);
         this.saveResolver = this.saveResolver.bind(this);
@@ -49,10 +53,16 @@ class ResolverEntity extends React.Component {
         this.setState({argumentType: event.target.value});
     }
 
+    handleArgumentRequiredChange(event, index, value) {
+        this.setState({modelChangesSubmitted: false});
+        this.setState({argumentRequired: value});
+    }
+
     addArgument(){
         this.setState({modelChangesSubmitted: false});
         var argName = this.state.argumentName;
         var argType = this.state.argumentType;
+        var argReq = this.state.argumentRequired;
         var args = this.state.arguments;
 
         //create id
@@ -62,11 +72,14 @@ class ResolverEntity extends React.Component {
         }
 
         //add new parameter
-        args.push({argumentId: argId, argumentName: argName, argumentType: argType});
+        args.push({argumentId: argId, argumentName: argName, argumentType: argType, required: argReq});
+
+        console.log(args);
 
         this.setState({arguments: args});
         this.setState({argumentName: ''});
         this.setState({argumentType: ''});
+        this.setState({argumentRequired: false});
     }
 
     deleteArgument(event) {
@@ -193,6 +206,7 @@ class ResolverEntity extends React.Component {
                         <tr className="text-white">
                             <th>Argument name</th>
                             <th>Argument type</th>
+                            <th>Required</th>
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -204,6 +218,7 @@ class ResolverEntity extends React.Component {
                                     <tr key={arg.argumentId}>
                                         <td>{arg.argumentName}</td>
                                         <td>{arg.argumentType}</td>
+                                        <td>{JSON.stringify(arg.required)}</td>
                                         <td><button value={arg.argumentId} onClick={scope.deleteArgument} type="button" className="btn btn-sm">Delete</button></td>
                                     </tr>
                                 );
@@ -217,6 +232,18 @@ class ResolverEntity extends React.Component {
                             <td>
                                 <input value={this.state.argumentType} onChange={this.handleArgumentTypeChange} type="text" className="form-control has-hint"/>
                                 <div className="hint">String, Int, Float, Boolean, ID or one of your entities.</div>
+                            </td>
+                            <td>
+                                <SelectField
+                                    value={this.state.argumentRequired}
+                                    onChange={this.handleArgumentRequiredChange}
+                                    selectedMenuItemStyle={{color: '#4285F4'}}
+                                    underlineStyle={{borderColor: '#CBCBCB'}}
+                                    underlineFocusStyle={{borderColor: '#4285F4'}}
+                                    style={{verticalAlign: 'bottom', marginTop: '5px'}}>
+                                    <MenuItem value={true} primaryText="true"/>
+                                    <MenuItem value={false} primaryText="false"/>
+                                </SelectField>
                             </td>
                             <td>
                                 <button onClick={this.addArgument} type="button" className="btn btn-sm">Add</button>
