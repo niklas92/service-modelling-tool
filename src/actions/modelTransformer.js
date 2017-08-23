@@ -1,7 +1,6 @@
 import Mustache from 'mustache';
-import resolverSingleReqTemplate from './mustache-templates/resolverSingleReq.mustache';
-import resolverMultipleReqTemplate from './mustache-templates/resolverMultipleReq.mustache';
 import apiRequestTemplate from './mustache-templates/apiRequest.mustache';
+import resolverFunctionTemplate from './mustache-templates/resolverFunction.mustache';
 
 exports.transformToGraphQLModel = function (serviceModel) {
 
@@ -111,12 +110,12 @@ var transformToResolversModel = function (serviceModel){
     for(var r in resolvers){
         var resolver = resolvers[r];
 
-        var resolverFunction;
-        if(resolver.apiRequests.length <= 1){
+        var resolverFunction = constructResolverFunction(resolver);
+        /*if(resolver.apiRequests.length <= 1){
             resolverFunction = constructResolverFunctionSingleAPI(resolver);
         }else{
             resolverFunction = constructResolverFunctionMultiAPI(resolver)
-        }
+        }*/
 
         if(resolver.apiRequests.length > 0 && resolver.apiRequests[0].httpMethod != "GET"){
             mutationsString += resolverFunction;
@@ -134,8 +133,7 @@ var transformToResolversModel = function (serviceModel){
     return resolversModel;
 };
 
-var constructResolverFunctionSingleAPI = function (resolver){
-
+var constructResolverFunction = function (resolver){
     var args = '';
     for(var a in resolver.arguments){
         if(a>0)
@@ -143,52 +141,50 @@ var constructResolverFunctionSingleAPI = function (resolver){
         args += resolver.arguments[a].argumentName;
     }
 
-   var apiReq = '';
-    if(resolver.apiRequests.length > 0)
+    var apiReq;
+    var otherAPIRequests = '';
+    if(resolver.apiRequests.length <= 1) {
         apiReq = constructAPIRequest(resolver.apiRequests[0], '');
+    }else {
+        apiReq = constructAPIRequest(resolver.apiRequests[0], 1);
+        //remove first element from array because already in function then construct other api requests
+
+        otherAPIRequests = constructOtherAPIRequests(resolver.apiRequests);
+    }
 
     var resolverFunctionContext = {
         resolverName: resolver.resolverName,
         arguments: args,
-        apiRequest: apiReq
+        apiReqNo: apiReq.apiReqNo,
+        url: apiReq.url,
+        body: apiReq.body,
+        httpMethod: apiReq.httpMethod,
+        authentication: apiReq.authentication,
+        headerParameters: apiReq.headerParameters,
+        queryParameters: apiReq.queryParameters,
+        otherAPIRequests: otherAPIRequests
     };
 
     //render context into template
-    var resolverFunction = Mustache.render(resolverSingleReqTemplate, resolverFunctionContext);
+    var resolverFunction = Mustache.render(resolverFunctionTemplate, resolverFunctionContext);
 
     return resolverFunction;
 };
 
-var constructResolverFunctionMultiAPI = function (resolver){
-
-    var args = '';
-    for(var a in resolver.arguments){
-        if(a>0)
-            args += ', ';
-        args += resolver.arguments[a].argumentName;
-    }
-
+var constructOtherAPIRequests = function (requests){
     var apiRequestsString = '';
-    var apiRequestVars = '';
-    for(var r in resolver.apiRequests){
-        var apiReqNo = (+r+1);
-        apiRequestsString += constructAPIRequest(resolver.apiRequests[r], apiReqNo) + '\n';
-        if(r != 0)
-            apiRequestVars += ', ';
-        apiRequestVars += 'apiReq' + apiReqNo;
+    for(var r in requests){
+        if(r > 0) {
+            var req = requests[r];
+            var apiReqContext = constructAPIRequest(req, (+r + 1));
+            apiRequestsString += Mustache.render(apiRequestTemplate, apiReqContext);
+        }
     }
+    console.log(apiRequestsString);
+    apiRequestsString = apiRequestsString.slice(0, -1);
+    console.log(apiRequestsString);
 
-    var resolverFunctionContext = {
-        resolverName: resolver.resolverName,
-        arguments: args,
-        apiRequests: apiRequestsString,
-        apiRequestVars: apiRequestVars
-    };
-
-    //render context into template
-    var resolverFunction = Mustache.render(resolverMultipleReqTemplate, resolverFunctionContext);
-
-    return resolverFunction;
+    return apiRequestsString;
 };
 
 var constructAPIRequest = function (apiRequest, apiReqNo){
@@ -239,8 +235,5 @@ var constructAPIRequest = function (apiRequest, apiReqNo){
         queryParameters: queryParam
     };
 
-    //render context into template
-    var apiReqCode = Mustache.render(apiRequestTemplate, apiRequestContext);
-
-    return apiReqCode;
+    return apiRequestContext;
 };

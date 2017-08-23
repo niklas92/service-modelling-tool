@@ -1,11 +1,25 @@
-//API request {{apiReqNo}}
-var url{{apiReqNo}} = new URL.parse('{{{url}}}'{{{queryParameters}}});
-var bodyData{{apiReqNo}} = {{{body}}};
-var options{{apiReqNo}} = {
-    host: url{{apiReqNo}}.host,
-    method: '{{httpMethod}}',
-    path: url{{apiReqNo}}.path,
-    auth: {{{authentication}}},
-    headers: {{{headerParameters}}}
-};
-var apiReq{{apiReqNo}} = makeAPIRequest(options{{apiReqNo}}, url{{apiReqNo}}.href, JSON.stringify(bodyData{{apiReqNo}}));
+                .then((resp) => {
+                    //transform response to JSON object
+                    var responseJSON = JSON.parse(resp);
+
+                    /*
+                    * TODO: INSERT MANUAL CODE REFINEMENT HERE
+                    * do something with response data
+                    * e.g. add something from previous apiReq
+                    * response to this apiReq url
+                    */
+
+                    //API request {{apiReqNo}}
+                    var url{{apiReqNo}} = new URL.parse('{{{url}}}'{{{queryParameters}}});
+                    var bodyData{{apiReqNo}} = {{{body}}};
+                    var options{{apiReqNo}} = {
+                        host: url{{apiReqNo}}.host,
+                        method: '{{httpMethod}}',
+                        path: url{{apiReqNo}}.path,
+                        auth: {{{authentication}}},
+                        headers: {{{headerParameters}}}
+                    };
+                    var apiReq{{apiReqNo}} = makeAPIRequest(options{{apiReqNo}}, url{{apiReqNo}}.href, JSON.stringify(bodyData{{apiReqNo}}));
+
+                    return apiReq{{apiReqNo}};
+                })

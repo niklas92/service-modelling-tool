@@ -50,7 +50,7 @@ class App extends React.Component {
         var gqlModel = ModelTransformer.transformToGraphQLModel(this.serviceModel);
 
         //transform from GraphQL model to code
-        CodeGenerator.renderServerFile(gqlModel);
+        CodeGenerator.renderServerFiles(gqlModel);
         event.preventDefault();
     }
 
