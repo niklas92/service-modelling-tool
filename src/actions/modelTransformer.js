@@ -111,11 +111,6 @@ var transformToResolversModel = function (serviceModel){
         var resolver = resolvers[r];
 
         var resolverFunction = constructResolverFunction(resolver);
-        /*if(resolver.apiRequests.length <= 1){
-            resolverFunction = constructResolverFunctionSingleAPI(resolver);
-        }else{
-            resolverFunction = constructResolverFunctionMultiAPI(resolver)
-        }*/
 
         if(resolver.apiRequests.length > 0 && resolver.apiRequests[0].httpMethod != "GET"){
             mutationsString += resolverFunction;
@@ -148,7 +143,6 @@ var constructResolverFunction = function (resolver){
     }else {
         apiReq = constructAPIRequest(resolver.apiRequests[0], 1);
         //remove first element from array because already in function then construct other api requests
-
         otherAPIRequests = constructOtherAPIRequests(resolver.apiRequests);
     }
 
@@ -180,9 +174,9 @@ var constructOtherAPIRequests = function (requests){
             apiRequestsString += Mustache.render(apiRequestTemplate, apiReqContext);
         }
     }
-    console.log(apiRequestsString);
+
+    //remove last \n of string for better format in resolvers.js
     apiRequestsString = apiRequestsString.slice(0, -1);
-    console.log(apiRequestsString);
 
     return apiRequestsString;
 };

@@ -74,8 +74,6 @@ class ResolverEntity extends React.Component {
         //add new parameter
         args.push({argumentId: argId, argumentName: argName, argumentType: argType, required: argReq});
 
-        console.log(args);
-
         this.setState({arguments: args});
         this.setState({argumentName: ''});
         this.setState({argumentType: ''});
