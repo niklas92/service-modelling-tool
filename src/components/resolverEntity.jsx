@@ -187,13 +187,13 @@ class ResolverEntity extends React.Component {
                     <div className="md-form">
                         <label>Resolver name *</label>
                         <input value={this.state.resolverName} onChange={this.handleResolverNameChange} type="text" className="form-control has-hint"/>
-                        <div className="hint">Resolver name is how the resolver function will be called (e.g. getPerson)!</div>
+                        <div className="hint">Resolver name is how the resolver function will be called (e.g. getPerson).</div>
                     </div>
 
                     <div className="md-form">
                         <label>Return type *</label>
                         <input value={this.state.returnType} onChange={this.handleReturnTypeChange} type="text" className="form-control has-hint"/>
-                        <div className="hint">String, Int, Float, Boolean, ID or one of your entities.</div>
+                        <div className="hint">String, Int, Float, Boolean, ID, one of your entities or an array of those (e.g. [Int]).</div>
                     </div>
 
                     <p><strong>Arguments</strong></p>

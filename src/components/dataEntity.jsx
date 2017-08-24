@@ -135,7 +135,7 @@ class DataEntity extends React.Component {
                             </td>
                             <td>
                                 <input value={this.state.parameterType} onChange={this.handleParameterTypeChange} type="text" className="form-control has-hint"/>
-                                <div className="hint">String, Int, Float, Boolean, ID or one of your entities.</div>
+                                <div className="hint">String, Int, Float, Boolean, ID, one of your entities or an array of those (e.g. [Int]).</div>
                             </td>
                             <td>
                                 <button onClick={this.addParameter} type="button" className="btn btn-sm">Add</button>

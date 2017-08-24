@@ -50,8 +50,10 @@ var transformToSchemaModel = function (serviceModel){
         dataModelString += '}\n';
     }
 
-    var queryString = '';
-    var mutationString = '';
+    var queryString = '# the schema allows the following query:\ntype Query { ';
+    var mutationString = '# the schema allows the following mutations:\ntype Mutation { ';
+    var queriesEmpty = true;
+    var mutationsEmpty = true;
 
     //construct the resolver model for the schema
     var resolvers = serviceModel.resolvers;
@@ -59,10 +61,20 @@ var transformToSchemaModel = function (serviceModel){
         var resolver = resolvers[r];
         if (resolver.apiRequests.length > 0 && resolver.apiRequests[0].httpMethod != "GET") {
             mutationString += '\n    ' + constructSchemaResolver(resolver);
+            mutationsEmpty = false;
         } else {
             queryString += '\n    ' + constructSchemaResolver(resolver);
+            queriesEmpty = false;
         }
     }
+    mutationString += '\n}';
+    queryString += '\n}';
+
+    //empty string if no mutations or no queries exists to avoid compilation errors in GraphQL
+    if(queriesEmpty)
+        queryString = '';
+    if(mutationsEmpty)
+        mutationString = '';
 
     var schemaModel = {
         dataModel: dataModelString,
@@ -102,8 +114,11 @@ var transformToResolversModel = function (serviceModel){
 
     var resolvers = serviceModel.resolvers;
 
-    var queriesString = '';
-    var mutationsString = '';
+    var queriesString = '    Query: {\n';
+    var mutationsString = '    Mutation: {\n';
+
+    var queriesEmpty = true;
+    var mutationsEmpty = true;
 
     //create functions for every resolver
     // and store them either in the queries- or mutations string
@@ -114,11 +129,21 @@ var transformToResolversModel = function (serviceModel){
 
         if(resolver.apiRequests.length > 0 && resolver.apiRequests[0].httpMethod != "GET"){
             mutationsString += resolverFunction;
+            mutationsEmpty = false;
         }else{
             queriesString += resolverFunction;
+            queriesEmpty = false;
         }
 
     }
+    queriesString += '    },';
+    mutationsString += '    }';
+
+    //empty string if no mutations or no queries exists to avoid compilation errors in GraphQL
+    if(queriesEmpty)
+        queriesString = '';
+    if(mutationsEmpty)
+        mutationsString = '';
 
     var resolversModel = {
         queries: queriesString,
@@ -194,6 +219,9 @@ var constructAPIRequest = function (apiRequest, apiReqNo){
     var auth = '';
     if(apiRequest.authentication.username != '' && apiRequest.authentication.password != '')
         auth = apiRequest.authentication.username + '+\':\'+' + apiRequest.authentication.password;
+    //to avoid syntax error in generated code add '' if no authentication
+    else
+        auth = '\'\'';
 
     //construct header and query parameters
     var queryParam = '';

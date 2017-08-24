@@ -4,13 +4,9 @@ import resolvers from './resolvers';
 
 var schema = `
 {{dataModel}}
-# the schema allows the following query:
-type Query { {{queries}}
-}
+{{queries}}
 
-# this schema allows the following mutation:
-type Mutation { {{mutations}}
-}
+{{mutations}}
 `;
 
 export default makeExecutableSchema({
