@@ -14,7 +14,7 @@ module.exports = {
     },*/
     entry: {
         'vendor': ['d3'],
-        'app': path.resolve(__dirname,'src/components/app.jsx')
+        'appControl': path.resolve(__dirname,'src/ui-components/appControl.jsx')
     },
     output: {
         path: path.resolve(__dirname,'dist'),

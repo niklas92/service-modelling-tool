@@ -12,7 +12,7 @@ import ModelTransformer from '../actions/modelTransformer';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
-class App extends React.Component {
+class AppControl extends React.Component {
 
     constructor(props) {
         super(props);
@@ -50,7 +50,7 @@ class App extends React.Component {
         var gqlModel = ModelTransformer.transformToGraphQLModel(this.serviceModel);
 
         //transform from GraphQL model to code
-        CodeGenerator.renderServerFiles(gqlModel);
+        CodeGenerator.generateServer(gqlModel);
         event.preventDefault();
     }
 
@@ -78,4 +78,4 @@ class App extends React.Component {
 
 }
 
-ReactDOM.render(<App modelName="Query Service Model"/>, document.getElementById('app'));
+ReactDOM.render(<AppControl modelName="Query Service Model"/>, document.getElementById('app'));

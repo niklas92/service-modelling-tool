@@ -7,8 +7,8 @@ exports.transformToGraphQLModel = function (serviceModel) {
     var gqlModel = {
         serverModel: transformToServerModel(serviceModel),
         packageModel: transformToPackageModel(serviceModel),
-        schemaModel: transformToSchemaModel(serviceModel),
-        resolversModel: transformToResolversModel(serviceModel)
+        schemaModel: constructSchema(serviceModel),
+        resolversModel: constructResolvers(serviceModel)
     };
 
     return gqlModel;
@@ -34,7 +34,7 @@ var transformToPackageModel = function (serviceModel) {
     return packageModel;
 };
 
-var transformToSchemaModel = function (serviceModel){
+var constructSchema = function (serviceModel){
     var dataModelString = '';
 
     //construct the data model for the schema
@@ -60,10 +60,10 @@ var transformToSchemaModel = function (serviceModel){
     for(var r in resolvers){
         var resolver = resolvers[r];
         if (resolver.apiRequests.length > 0 && resolver.apiRequests[0].httpMethod != "GET") {
-            mutationString += '\n    ' + constructSchemaResolver(resolver);
+            mutationString += '\n    ' + constructOperator(resolver);
             mutationsEmpty = false;
         } else {
-            queryString += '\n    ' + constructSchemaResolver(resolver);
+            queryString += '\n    ' + constructOperator(resolver);
             queriesEmpty = false;
         }
     }
@@ -85,7 +85,7 @@ var transformToSchemaModel = function (serviceModel){
     return schemaModel;
 };
 
-var constructSchemaResolver =  function (resolverModel){
+var constructOperator =  function (resolverModel){
     var schemaResolver = resolverModel.resolverName;
 
     //if resolver has arguments add each arg in function e.g. (id: Int, name: String)
@@ -110,7 +110,7 @@ var constructSchemaResolver =  function (resolverModel){
     return schemaResolver;
 };
 
-var transformToResolversModel = function (serviceModel){
+var constructResolvers = function (serviceModel){
 
     var resolvers = serviceModel.resolvers;
 

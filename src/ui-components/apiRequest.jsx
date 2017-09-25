@@ -164,7 +164,7 @@ class APIRequest extends React.Component {
 
                 <div value={this.state.body} onChange={this.handleBodyChange} className="md-form">
                     <input type="text" className="form-control"/>
-                    <label>Request body parameter name</label>
+                    <label>Request body</label>
                 </div>
 
                 <p>Authentication</p>

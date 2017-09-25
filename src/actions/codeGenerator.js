@@ -6,7 +6,7 @@ import packageTemplate from './mustache-templates/package.mustache';
 import schemaTemplate from './mustache-templates/schema.mustache';
 import resolversTemplate from './mustache-templates/resolvers.mustache';
 
-exports.renderServerFiles = function (gqlModel) {
+exports.generateServer = function (gqlModel) {
 
     //render contexts into templates
     var serverOutput = Mustache.render(serverTemplate, gqlModel.serverModel);
