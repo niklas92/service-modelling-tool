@@ -1,13 +1,9 @@
 # Query Service Modelling Application
 A web application to let the developer specify the query service model.
 
-## Getting Started
-
-To get you started you can simply clone the [react-es6-webpack](https://github.com/adrianhdezm/react-es6-webpack) repository and install all its dependencies:
-
 ### Prerequisites
 
-You need git to clone the [service-modelling-tool](https://github.com/niklas92/service-modelling-tool)  repository. You can get git from
+You need git to clone the [service-modelling-tool](https://github.com/niklas92/service-modelling-tool) repository. You can get git from
 [http://git-scm.com/](http://git-scm.com/).
 
 We also use a number of node.js tools to initialize and test [service-modelling-tool](https://github.com/niklas92/service-modelling-tool) . You must have node.js and
@@ -24,34 +20,20 @@ cd service-modelling-tool
 
 ### Install Dependencies
 
-We get the tools we depend upon via `npm`, the [node package manager](https://www.npmjs.com).
+Install the depencies with the [node package manager](https://www.npmjs.com) by entering:
 
 ```bash
 npm install
 ```
 
-
-### Create a Bundle for the Application
-
-This project use [webpack](https://github.com/webpack/webpack) for creating a bundle of the application and its dependencies
-
-We have pre-configured `npm` to automatically run `webpack` so we can simply do:
-
-```bash
-npm run build
-```
-
-Behind the scenes this will call `webpack --config webpack.config.js `.  After, you should find that you have one new folder in your project.
-
-* `dist` - contains all the files of your application and their dependencies.
-
 ### Run the Application
 
-We have preconfigured the project with a simple development web server.  The simplest way to start
-this server is:
+This project uses [webpack](https://github.com/webpack/webpack) for creating a bundle of the application and its dependencies.
+
+To build and start the application, simply execute the following command:
 
 ```bash
 npm start
 ```
 
-Now browse to the app at `http://localhost:8000/index.html`.
+Now browse to the app at `http://localhost:8000`.
